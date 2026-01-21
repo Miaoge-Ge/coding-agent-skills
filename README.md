@@ -63,3 +63,4 @@ These skills are optimized to enhance your pair programming experience by provid
 3. **应用上下文**：
    - **Trae / Cursor**：将文件添加到上下文或使用 `@` 引用。
    - **Claude / Open Code**：复制文件内容，作为系统指令或初始提示词发送给 AI。
+# coding-agent-skills
