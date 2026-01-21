@@ -27,10 +27,12 @@ These skills are optimized to enhance your pair programming experience by provid
 
 ### How to Use
 1. **Choose your language**: Navigate to `skills/` (English) or `skills_cn/` (Chinese).
-2. **Select a skill**: Open the markdown file for the expert you need (e.g., `software-architect.md`).
-3. **Apply context**:
-   - **Trae / Cursor**: Add the file to your active context or reference it using `@`.
-   - **Claude / Open Code**: These files are formatted with YAML frontmatter to be compatible as Agent Skills. Please refer to the [Agent Skills Overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) for installation instructions (typically placing them in your skills directory).
+2. **Select a skill**: Choose the markdown file for the expert you need (e.g., `software-architect.md`).
+3. **Install the skill**:
+   - **Trae**: Place the file in `.trae/skills/` directory (e.g. `.trae/skills/software-architect.md`).
+   - **Cursor**: Place the file in `.cursor/rules/` directory.
+   - **Claude Code**: Place the file in `.claude/skills/` directory.
+   - **Open Code**: Place the file in `.opencode/skills/` directory.
 
 ---
 
@@ -59,7 +61,9 @@ These skills are optimized to enhance your pair programming experience by provid
 
 ### 使用方法
 1. **选择语言**：进入 `skills/` (英文) 或 `skills_cn/` (中文) 目录。
-2. **选择技能**：打开您需要的专家技能 Markdown 文件（如 `软件架构师.md`）。
-3. **应用上下文**：
-   - **Trae / Cursor**：将文件添加到当前上下文或使用 `@` 引用。
-   - **Claude / Open Code**：这些文件包含 YAML frontmatter，兼容 Agent Skills 格式。请参考 [Agent Skills Overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) 文档进行配置（通常只需将其放入指定的技能目录即可自动生效）。
+2. **选择技能**：选择您需要的专家技能 Markdown 文件（如 `软件架构师.md`）。
+3. **安装技能**：
+   - **Trae**: 将文件放入 `.trae/skills/` 目录下（例如 `.trae/skills/软件架构师.md`）。
+   - **Cursor**: 将文件放入 `.cursor/rules/` 目录下。
+   - **Claude Code**: 将文件放入 `.claude/skills/` 目录下。
+   - **Open Code**: 将文件放入 `.opencode/skills/` 目录下。
