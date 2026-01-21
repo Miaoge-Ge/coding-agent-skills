@@ -1,4 +1,4 @@
-# Trae Expert Skills / Trae 专家技能库
+# AI Expert Skills / AI 专家技能库
 
 [English](#english) | [中文](#chinese)
 
@@ -6,9 +6,9 @@
 ## 🇬🇧 English
 
 ### Introduction
-Welcome to the **Trae Expert Skills** repository. This collection hosts a set of refined system prompts and skill definitions designed to turn your AI coding assistant into a domain-specific expert. Whether you need a competitive programming tutor, a software architect, or a deep learning researcher, you'll find the right persona here.
+Welcome to the **AI Expert Skills** repository. This collection hosts a set of refined system prompts and skill definitions designed to turn your AI coding assistant into a domain-specific expert. Whether you use **Trae, Cursor, Claude Code, Open Code**, or other AI coding tools, you'll find the right persona here.
 
-These skills are optimized for use within **Trae IDE** to enhance your pair programming experience.
+These skills are optimized to enhance your pair programming experience by providing structured, high-quality context for your AI.
 
 ### Directory Structure
 - `skills/`: Contains the English versions of the skill files.
@@ -26,9 +26,11 @@ These skills are optimized for use within **Trae IDE** to enhance your pair prog
 | **GitHub Master** | Git workflows, repository management, and GitHub Actions CI/CD. | [View](skills/github-master.md) |
 
 ### How to Use
-1. Navigate to the `skills/` directory.
-2. Open the markdown file for the expert you need.
-3. Trae will automatically recognize and apply the skill context if configured, or you can paste the content into your session instructions.
+1. **Choose your language**: Navigate to `skills/` (English) or `skills_cn/` (Chinese).
+2. **Select a skill**: Open the markdown file for the expert you need (e.g., `software-architect.md`).
+3. **Apply context**:
+   - **For Trae/Cursor**: Add the file to your context or `@` mention it.
+   - **For Claude/Open Code**: Copy the content and paste it as a system instruction or initial prompt.
 
 ---
 
@@ -36,9 +38,9 @@ These skills are optimized for use within **Trae IDE** to enhance your pair prog
 ## 🇨🇳 中文
 
 ### 简介
-欢迎来到 **Trae 专家技能库**。本项目收集了一系列精心打磨的系统提示词和技能定义，旨在将您的 AI 编程助手转化为特定领域的专家。无论您需要一位竞赛编程导师、软件架构师，还是深度学习研究员，这里都能找到合适的角色。
+欢迎来到 **AI 专家技能库**。本项目收集了一系列精心打磨的系统提示词和技能定义，旨在将您的 AI 编程助手转化为特定领域的专家。无论您使用的是 **Trae、Cursor、Claude Code、Open Code** 还是其他 AI 编程工具，这里都能找到合适的角色。
 
-这些技能专为 **Trae IDE** 优化，旨在提升您的结对编程体验。
+这些技能旨在通过提供结构化、高质量的上下文，提升您的结对编程体验。
 
 ### 目录结构
 - `skills/`：包含英文版本的技能文件。
@@ -56,6 +58,8 @@ These skills are optimized for use within **Trae IDE** to enhance your pair prog
 | **GitHub 大师** | Git 工作流、仓库管理与 GitHub Actions CI/CD。 | [查看](skills_cn/GitHub大师.md) |
 
 ### 使用方法
-1. 进入 `skills_cn/` 目录。
-2. 打开您需要的专家技能 Markdown 文件。
-3. Trae 会自动识别并应用该技能上下文（如果已配置），或者您可以将内容复制到您的会话指令中。
+1. **选择语言**：进入 `skills/` (英文) 或 `skills_cn/` (中文) 目录。
+2. **选择技能**：打开您需要的专家技能 Markdown 文件（如 `软件架构师.md`）。
+3. **应用上下文**：
+   - **Trae / Cursor**：将文件添加到上下文或使用 `@` 引用。
+   - **Claude / Open Code**：复制文件内容，作为系统指令或初始提示词发送给 AI。
