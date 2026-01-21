@@ -29,8 +29,8 @@ These skills are optimized to enhance your pair programming experience by provid
 1. **Choose your language**: Navigate to `skills/` (English) or `skills_cn/` (Chinese).
 2. **Select a skill**: Open the markdown file for the expert you need (e.g., `software-architect.md`).
 3. **Apply context**:
-   - **For Trae/Cursor**: Add the file to your context or `@` mention it.
-   - **For Claude/Open Code**: Copy the content and paste it as a system instruction or initial prompt.
+   - **Trae / Cursor**: Add the file to your context or `@` mention it.
+   - **Claude / Open Code**: Refer to the [Agent Skills Overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) documentation to register these files as custom skills.
 
 ---
 
@@ -62,5 +62,4 @@ These skills are optimized to enhance your pair programming experience by provid
 2. **选择技能**：打开您需要的专家技能 Markdown 文件（如 `软件架构师.md`）。
 3. **应用上下文**：
    - **Trae / Cursor**：将文件添加到上下文或使用 `@` 引用。
-   - **Claude / Open Code**：复制文件内容，作为系统指令或初始提示词发送给 AI。
-# coding-agent-skills
+   - **Claude / Open Code**：请参考 [Agent Skills Overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) 文档，将这些文件注册为自定义技能（Agent Skills）。
