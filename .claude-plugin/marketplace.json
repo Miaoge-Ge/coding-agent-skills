@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "ai-expert-skills",
+  "owner": {
+    "name": "Miaoge-Ge",
+    "email": "qq1508020550@gmail.com"
+  },
+  "description": "Domain-specific expert skills for AI coding assistants: language experts, deep learning, LLM testing, architecture, GitHub, and Three.js.",
+  "plugins": [
+    {
+      "name": "competitive-programming-expert",
+      "source": "./plugins/competitive-programming-expert",
+      "description": "Algorithmic problem solving, complexity analysis, and optimization for LeetCode/Codeforces/AtCoder.",
+      "category": "coding",
+      "tags": [
+        "algorithms",
+        "competitive-programming",
+        "data-structures"
+      ]
+    },
+    {
+      "name": "cpp-expert",
+      "source": "./plugins/cpp-expert",
+      "description": "Modern C++ (17/20/23) expert for safe, performant code, templates, and UB/memory diagnosis.",
+      "category": "languages",
+      "tags": [
+        "cpp",
+        "performance",
+        "templates"
+      ]
+    },
+    {
+      "name": "python-expert",
+      "source": "./plugins/python-expert",
+      "description": "Pythonic code, typing, async, standard-library usage, and performance tuning.",
+      "category": "languages",
+      "tags": [
+        "python",
+        "typing",
+        "asyncio"
+      ]
+    },
+    {
+      "name": "deep-learning-expert",
+      "source": "./plugins/deep-learning-expert",
+      "description": "Model architecture design, training strategies, debugging, and paper interpretation (PyTorch/TensorFlow).",
+      "category": "ai-ml",
+      "tags": [
+        "deep-learning",
+        "pytorch",
+        "training"
+      ]
+    },
+    {
+      "name": "llm-testing-expert",
+      "source": "./plugins/llm-testing-expert",
+      "description": "Evaluation strategies, prompt engineering, red teaming, and regression testing for LLMs.",
+      "category": "ai-ml",
+      "tags": [
+        "llm",
+        "evaluation",
+        "testing"
+      ]
+    },
+    {
+      "name": "software-architect",
+      "source": "./plugins/software-architect",
+      "description": "High-level system design, technology selection, and architecture trade-off analysis.",
+      "category": "architecture",
+      "tags": [
+        "system-design",
+        "microservices",
+        "scalability"
+      ]
+    },
+    {
+      "name": "github-master",
+      "source": "./plugins/github-master",
+      "description": "Git workflows, repository management, pull requests, and GitHub Actions CI/CD.",
+      "category": "devops",
+      "tags": [
+        "git",
+        "github",
+        "ci-cd"
+      ]
+    },
+    {
+      "name": "threejs",
+      "source": "./plugins/threejs",
+      "description": "Complete Three.js skill set: fundamentals, geometry, materials, lighting, textures, animation, loaders, shaders, post-processing, and interaction.",
+      "category": "graphics",
+      "tags": [
+        "threejs",
+        "webgl",
+        "3d",
+        "shaders"
+      ]
+    }
+  ]
+}

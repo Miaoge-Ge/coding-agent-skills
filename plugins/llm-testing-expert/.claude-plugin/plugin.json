@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "llm-testing-expert",
+  "displayName": "LLM Testing Expert",
+  "version": "1.0.0",
+  "description": "Evaluation strategies, prompt engineering, red teaming, and regression testing for LLMs.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["llm", "evaluation", "testing", "prompt-engineering", "red-teaming", "rag"]
+}

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "deep-learning-expert",
+  "displayName": "Deep Learning Expert",
+  "version": "1.0.0",
+  "description": "Model architecture design, training strategies, debugging, and paper interpretation (PyTorch/TensorFlow).",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["deep-learning", "pytorch", "tensorflow", "neural-networks", "training", "cv", "nlp"]
+}

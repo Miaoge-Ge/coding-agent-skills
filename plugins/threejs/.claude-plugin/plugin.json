@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "threejs",
+  "displayName": "Three.js Expert",
+  "version": "1.0.0",
+  "description": "Complete Three.js skill set: fundamentals, geometry, materials, lighting, textures, animation, loaders, shaders, post-processing, and interaction.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["threejs", "webgl", "3d", "glsl", "shaders", "gltf", "graphics"]
+}

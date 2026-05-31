@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "github-master",
+  "displayName": "GitHub Master",
+  "version": "1.0.0",
+  "description": "Git workflows, repository management, pull requests, and GitHub Actions CI/CD.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["git", "github", "ci-cd", "github-actions", "pull-requests", "workflows"]
+}

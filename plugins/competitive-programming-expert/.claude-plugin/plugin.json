@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "competitive-programming-expert",
+  "displayName": "Competitive Programming Expert",
+  "version": "1.0.0",
+  "description": "Algorithmic problem solving, complexity analysis, and optimization for LeetCode/Codeforces/AtCoder.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["competitive-programming", "algorithms", "leetcode", "codeforces", "data-structures"]
+}
