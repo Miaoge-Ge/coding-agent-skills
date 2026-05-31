@@ -1,62 +1,74 @@
 ---
 name: accessibility-expert
-description: "Web accessibility (a11y) expert for WCAG, semantic HTML, and ARIA. Trigger keywords: accessibility, a11y, WCAG, ARIA, screen reader, keyboard navigation, focus, contrast, alt text, semantic HTML. Use to make UIs accessible, audit a11y issues, or fix keyboard/screen-reader problems."
+description: "Expert web accessibility (a11y): WCAG 2.2 AA, semantic HTML, ARIA, keyboard, and screen readers. Trigger keywords: accessibility, a11y, WCAG, ARIA, role, screen reader, keyboard navigation, focus, focus trap, contrast, alt text, semantic HTML, label, axe, tab order. Use to build accessible UI, audit/fix a11y issues, or add accessible behavior to widgets."
 ---
 
 # Web Accessibility Expert
 
-## Role
-You are a Web Accessibility Expert. Make interfaces usable by everyone — keyboard, screen reader, and assistive tech — targeting WCAG 2.2 AA.
+> The first rule of ARIA is don't use ARIA — a native `<button>` beats `<div role="button">` every time. Target WCAG 2.2 AA. If it doesn't work with the keyboard, it isn't done.
 
 ## When to Use
-- User builds UI and wants it accessible from the start.
-- User audits/fixes a11y issues (keyboard traps, missing labels, low contrast).
-- User adds complex widgets (modals, menus, tabs, comboboxes) that need ARIA.
-- User needs alt text, focus management, or form-accessibility guidance.
+- Building UI you want accessible from the start.
+- Auditing/fixing issues: keyboard traps, unlabeled controls, low contrast, missing focus.
+- Adding accessible behavior to custom widgets (modal, menu, tabs, combobox, accordion, tooltip).
+- Forms, images, dynamic updates, and motion.
 
 ## When NOT to Use
 - Pure visual styling without semantics → `tailwind-expert`.
 - Component state logic → `react-expert`.
 
-## Guidelines
+## Core Principles
 
-### 1. Semantics first, ARIA second
-- Use native elements (`<button>`, `<a>`, `<label>`, `<nav>`, `<main>`) — they bring behavior and roles for free.
-- ARIA is a fallback for gaps. **No ARIA is better than bad ARIA.** Don't put roles on elements that already have them.
+### 1. Semantics first, ARIA last
+- Use the native element for the job (`<button>`, `<a href>`, `<label>`, `<nav>`, `<main>`, `<dialog>`, `<input type>`). They bring role, state, and keyboard behavior for free.
+- **No ARIA is better than bad ARIA.** Don't add roles to elements that already have them; don't override native semantics. ARIA changes how AT announces — it does **not** add behavior (you still wire keyboard/focus yourself).
 
-### 2. Keyboard operability
-- Everything actionable must be reachable and operable by keyboard (Tab/Enter/Space/Esc/arrows as appropriate).
-- Maintain a visible focus indicator (`:focus-visible`); never `outline: none` without a replacement.
-- Manage focus for dialogs/menus: move focus in, trap within, restore on close.
+### 2. Keyboard operability (WCAG 2.1.1)
+- Everything actionable is reachable and operable by keyboard: Tab to move, Enter/Space to activate, Esc to dismiss, arrows within composite widgets (menus, tabs, radios).
+- Keep a **visible focus indicator** (`:focus-visible`). Never `outline:none` without a clear replacement.
+- Logical tab order = DOM order. Avoid positive `tabindex`; use `tabindex="-1"` for programmatic focus, `0` to add non-interactive elements to tab order only when necessary.
 
-### 3. Names, roles, states
-- Every input has a programmatic label (`<label for>`, `aria-label`, or `aria-labelledby`).
-- Images: meaningful `alt`; decorative images use `alt=""`.
-- Communicate state with `aria-expanded`, `aria-selected`, `aria-checked`, `aria-current`, and announce async changes via live regions.
+### 3. Focus management for overlays
+- Dialogs/menus: move focus **in** on open, **trap** within, restore to the trigger on close, and make background `inert`/`aria-hidden`. Prefer the native `<dialog>` element.
 
-### 4. Perceivable
-- Text contrast ≥ 4.5:1 (3:1 for large text). Don't convey meaning by color alone.
-- Respect `prefers-reduced-motion`.
+### 4. Name, role, value (WCAG 4.1.2)
+- Every control has an accessible name: `<label for>`, wrapping `<label>`, `aria-label`, or `aria-labelledby`. Icon-only buttons need an accessible name (visually-hidden text or `aria-label`).
+- Images: meaningful `alt`; decorative → `alt=""`. Communicate state with `aria-expanded`/`-selected`/`-checked`/`-current`/`-pressed`, and announce async changes via a live region (`aria-live="polite"`, or `role="alert"` for errors).
+
+### 5. Perceivable
+- Contrast ≥ **4.5:1** (text), **3:1** (large text & UI components/focus indicators — new in 2.2). Never rely on color alone to convey meaning.
+- Honor `prefers-reduced-motion`. Don't disable zoom; support 200% text scaling.
+
+## Common Mistakes
+- **`<div onClick>` as a button** → not focusable or keyboard-operable; use `<button>`.
+- **Placeholder as a label** → disappears on input; use a real `<label>`.
+- **`role` without behavior** → `role="button"` still needs `tabindex="0"` + Enter/Space handlers (so just use `<button>`).
+- **Removing focus outlines** for looks → keyboard users get lost.
+- **`aria-label` on a non-interactive `<div>`** → often ignored; put names on real controls.
+- **Toast/error not announced** → wrap in a live region.
+- **`tabindex` > 0** → breaks natural order.
 
 ## Examples
 
 **Accessible icon button + disclosure**
 ```html
 <button type="button" aria-expanded="false" aria-controls="menu">
-  <svg aria-hidden="true">…</svg>
+  <svg aria-hidden="true" focusable="false">…</svg>
   <span class="sr-only">Open menu</span>
 </button>
 <ul id="menu" hidden>…</ul>
+<!-- toggle hidden + aria-expanded together in JS; Esc closes and returns focus -->
 ```
 
-**Associated form field with error**
+**Form field wired to its label and error**
 ```html
 <label for="email">Email</label>
-<input id="email" type="email" aria-describedby="email-err" aria-invalid="true" />
+<input id="email" name="email" type="email"
+       aria-describedby="email-err" aria-invalid="true" required />
 <p id="email-err" role="alert">Enter a valid email address.</p>
 ```
 
 ## See Also
-- `tailwind-expert` — focus styles and color contrast.
-- `react-expert` — focus management and accessible component patterns.
-- `testing-expert` — automated a11y checks (axe) in your test suite.
+- `tailwind-expert` — `focus-visible` styles and meeting contrast ratios.
+- `react-expert` — focus management, `inert`, and accessible component patterns.
+- `testing-expert` — automated checks with `axe-core`/`jest-axe` in CI.

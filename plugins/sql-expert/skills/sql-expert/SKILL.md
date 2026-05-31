@@ -1,56 +1,67 @@
 ---
 name: sql-expert
-description: "SQL and relational database expert for queries, schema design, indexing, and optimization. Trigger keywords: SQL, database, Postgres, MySQL, SQLite, JOIN, index, query plan, EXPLAIN, normalization, transaction, N+1. Use for writing/optimizing queries, designing schemas, or fixing slow queries."
+description: "Expert SQL & relational databases: queries, schema design, indexing, query-plan optimization, and transactions (Postgres/MySQL/SQLite). Trigger keywords: SQL, database, Postgres, MySQL, SQLite, JOIN, index, EXPLAIN, query plan, slow query, N+1, normalization, transaction, isolation, deadlock, migration. Use for writing/optimizing queries, designing schemas, or fixing slow/locking queries."
 ---
 
 # SQL & Database Expert
 
-## Role
-You are a SQL and Relational Database Expert. Write correct, set-based queries and design schemas that stay fast as data grows.
+> Think in sets, not loops. The database is smarter than your application loop. When something is slow, read the plan (`EXPLAIN ANALYZE`) before guessing — the answer is almost always a missing index or a bad join.
 
 ## When to Use
-- User writes, debugs, or optimizes SQL queries.
-- User designs schemas, relationships, constraints, or migrations.
-- User has slow queries, missing indexes, or N+1 problems.
-- User reasons about transactions, isolation, or locking.
+- Writing, debugging, or optimizing SQL.
+- Schema design: tables, relationships, constraints, types, migrations.
+- Slow queries, missing/unused indexes, N+1, lock contention.
+- Transactions, isolation levels, and concurrency correctness.
 
 ## When NOT to Use
-- ORM/application wiring → `nodejs-backend-expert` / language skill.
-- Non-relational/vector retrieval → `rag-expert`.
-- System-scale data architecture → `software-architect`.
+- ORM/app wiring → `nodejs-backend-expert` / language skill.
+- Vector/semantic retrieval → `rag-expert`.
+- Data-platform / warehouse-scale architecture → `software-architect`.
 
-## Guidelines
+## Core Principles
 
 ### 1. Schema design
-- Normalize to 3NF by default; denormalize only with a measured read reason.
-- Use the right types (`timestamptz`, `numeric` for money, `uuid`/`bigint` keys). Enforce integrity with `NOT NULL`, `UNIQUE`, `FOREIGN KEY`, `CHECK`.
+- Normalize to 3NF by default; denormalize only for a **measured** read win, and then keep it consistent (triggers/jobs).
+- Right types: `timestamptz` (not naive timestamps), `numeric`/`decimal` for money (never float), `uuid`/`bigint` keys, native `enum`/`boolean`. Enforce integrity at the DB: `NOT NULL`, `UNIQUE`, `FOREIGN KEY`, `CHECK` — the app is not the only writer.
 
-### 2. Query well
-- Think in **sets**, not loops. Filter early, select only needed columns (avoid `SELECT *`).
-- Understand JOIN types; beware fan-out from one-to-many joins inflating aggregates (use subqueries/CTEs).
-- Avoid the N+1 pattern — fetch related rows in one query with a JOIN or `IN (...)`.
+### 2. Query like a pro
+- Select only needed columns (no `SELECT *` in app queries — it breaks covering indexes and over-fetches).
+- Know your JOINs and beware **fan-out**: a one-to-many join multiplies rows and inflates `SUM`/`COUNT`. Pre-aggregate in a subquery/CTE.
+- Kill **N+1** patterns: one query with a JOIN or `WHERE id IN (...)` instead of a query per row.
+- `EXISTS` over `IN (subquery)` for correlated existence checks; window functions for running totals/ranking instead of self-joins.
 
-### 3. Indexing & performance
-- Index columns used in `WHERE`, `JOIN`, and `ORDER BY`. Composite index order = equality columns first, then range.
-- Indexes speed reads but cost writes — add deliberately. A function on an indexed column (`WHERE lower(x)=...`) defeats the index unless you index the expression.
-- Always read the plan: `EXPLAIN ANALYZE`. Look for seq scans on large tables and bad row estimates.
+### 3. Indexing
+- Index columns in `WHERE`, `JOIN`, and `ORDER BY`. **Composite index order**: equality columns first, then the range/sort column. The index serves a left-to-right prefix.
+- A function/expression on the column (`WHERE lower(email)=…`, `WHERE created_at::date=…`) defeats a plain index — index the expression or rewrite as a sargable range.
+- Indexes speed reads, slow writes, and use space — add deliberately. Drop unused ones. Use partial/covering indexes for hot queries.
 
-### 4. Transactions
-- Keep transactions short; pick the isolation level intentionally; be aware of deadlocks and lock ordering.
+### 4. Read the plan & transactions
+- `EXPLAIN (ANALYZE, BUFFERS)`. Red flags: seq scan on a large table for a selective filter, row-estimate vs actual far off (stale stats — `ANALYZE`), nested-loop over huge sets.
+- Keep transactions short; choose isolation deliberately (`READ COMMITTED` default; `SERIALIZABLE` for invariants, with retry on serialization failure). Acquire locks in a consistent order to avoid deadlocks.
+
+## Common Mistakes
+- **`SELECT *`** in application code → over-fetch, fragile, no covering index.
+- **Aggregates over a fanned-out JOIN** → doubled sums; aggregate before joining.
+- **Functions on indexed columns in `WHERE`** → full scan.
+- **Wrong composite-index column order** → index unused for the query.
+- **Offset pagination on huge tables** (`OFFSET 100000`) → slow; use keyset/cursor pagination.
+- **Floating-point money** → rounding errors; use `numeric`.
+- **Implicit type mismatch** in joins/filters → silent full scans.
 
 ## Examples
 
-**Avoid JOIN fan-out in aggregates with a CTE**
+**Avoid JOIN fan-out with a CTE; keyset pagination**
 ```sql
-WITH order_totals AS (
-  SELECT order_id, SUM(qty * price) AS total
-  FROM order_items
-  GROUP BY order_id
+WITH totals AS (
+  SELECT order_id, SUM(qty * unit_price) AS total
+  FROM order_items GROUP BY order_id
 )
 SELECT o.id, o.created_at, t.total
 FROM orders o
-JOIN order_totals t ON t.order_id = o.id
-WHERE o.created_at >= now() - interval '30 days';
+JOIN totals t ON t.order_id = o.id
+WHERE (o.created_at, o.id) < ($1, $2)   -- keyset cursor, not OFFSET
+ORDER BY o.created_at DESC, o.id DESC
+LIMIT 20;
 ```
 
 **Composite index matching a query**
@@ -61,6 +72,7 @@ CREATE INDEX idx_orders_tenant_status_created
 ```
 
 ## See Also
-- `nodejs-backend-expert` — calling the database from services.
-- `performance-expert` — end-to-end latency profiling.
-- `api-design-expert` — pagination strategies backed by SQL.
+- `nodejs-backend-expert` — calling the DB safely (pooling, parameterization).
+- `performance-expert` — end-to-end latency and profiling.
+- `api-design-expert` — cursor pagination contracts backed by SQL.
+- `security-expert` — parameterization and least-privilege access.

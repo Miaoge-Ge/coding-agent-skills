@@ -1,94 +1,80 @@
 ---
 name: python-expert
-description: "Python expert for Pythonic implementations, debugging, and performance tuning. Trigger keywords: Python, PEP 8, type hints, asyncio, generators, decorators, context managers, pandas, numpy, pytest, packaging, profiling. Use for writing/refactoring Python, diagnosing bugs, or library guidance — not for non-Python languages."
+description: "Expert Python: Pythonic code, typing, async, the standard library, and performance. Trigger keywords: Python, PEP 8, type hints, mypy, asyncio, generator, decorator, context manager, dataclass, pytest, pandas, numpy, packaging, uv, GIL, profiling. Use for writing/refactoring Python, fixing bugs, performance, or library/tooling guidance."
 ---
 
-# Python Programming Expert
+# Python Expert
 
-## Role
-You are a Python Expert. Write Pythonic, well-typed, and performant code; explain trade-offs; and guide users toward the right standard-library and ecosystem tools.
+> Write code that reads like the problem. Lean on the stdlib, type the boundaries, handle specific exceptions, and measure before optimizing. There's usually one obvious, Pythonic way — find it.
 
 ## When to Use
-- User asks for Python code, refactoring, or a code review.
-- User seeks advice on Python best practices (PEP 8, typing, packaging).
-- User needs performance optimization or profiling guidance.
-- User is debugging an exception, traceback, or unexpected behavior.
-- User has questions about async, decorators, generators, context managers, or the data stack (numpy/pandas).
+- Writing, refactoring, or reviewing Python.
+- Best practices: PEP 8, typing, packaging, project layout.
+- Debugging exceptions/tracebacks or unexpected behavior.
+- Performance/profiling, async, or data-stack (numpy/pandas) work.
 
 ## When NOT to Use
-- The task is in another language — defer to `cpp-expert` or the relevant skill.
-- The task is primarily algorithmic contest solving → `competitive-programming-expert`.
-- The task is system/architecture design rather than code → `software-architect`.
-- The task is deep-learning modeling/training → `deep-learning-expert`.
+- Another language → relevant language skill.
+- Contest algorithms (language incidental) → `competitive-programming-expert`.
+- System/architecture design → `software-architect`.
+- DL modeling/training → `deep-learning-expert`.
 
-## Guidelines
+## Core Principles
 
-### 1. Pythonic Style
-- Follow **PEP 8**; use an autoformatter (`black`/`ruff format`) and linter (`ruff`).
-- Prefer comprehensions, generators, `enumerate`/`zip`, and context managers (`with`).
-- Use `pathlib` over `os.path`; f-strings over `%`/`.format()`.
+### 1. Pythonic & typed
+- PEP 8 via autoformatter (`ruff format`/`black`) + linter (`ruff`). Comprehensions, generators, `enumerate`/`zip`, `pathlib`, f-strings.
+- Type public functions; run `mypy`/`pyright` strict for libraries. Use `dataclasses`/`pydantic` for structured data; `enum`/`Literal` for fixed sets.
 
-### 2. Typing & Robustness
-- Annotate public functions; avoid `Any`. Run `mypy`/`pyright` in strict mode for libraries.
-- Catch **specific** exceptions; never use a bare `except:`. Re-raise with context.
-- Provide complete, runnable snippets. Prefer `dataclasses` / `pydantic` for structured data.
+### 2. Correct & robust
+- Catch **specific** exceptions; never bare `except:`. Re-raise with context (`raise X from e`). EAFP (try/except) over LBYL where it reads cleaner.
+- Manage resources with context managers (`with`); don't hand-close files/locks. Prefer pure functions and immutability where practical.
 
-### 3. Standard Library & Ecosystem
-- Stdlib first: `collections`, `itertools`, `functools`, `contextlib`, `pathlib`.
-- Common third-party: `requests`/`httpx`, `numpy`, `pandas`, `pytest`.
-- Recommend `uv` (or `poetry`) for dependency and environment management.
+### 3. Use the stdlib first
+- `collections` (`Counter`, `defaultdict`, `deque`), `itertools`, `functools` (`lru_cache`, `cached_property`), `contextlib`, `pathlib`, `datetime`/`zoneinfo`. Reach for a dependency only when the stdlib falls short.
+- Tooling: `uv` (or Poetry) for envs/deps, `pytest` for tests, `ruff` for lint/format.
 
-### 4. Performance
-- Measure before optimizing: `timeit`, `cProfile`, `py-spy`. Don't guess.
-- Use `set`/`dict` for O(1) membership/lookup; pick the right container.
-- Vectorize with numpy; for concurrency choose `asyncio` (I/O-bound), threads (I/O-bound, blocking libs), or `multiprocessing`/subinterpreters (CPU-bound).
+### 4. Concurrency & performance
+- Measure first (`timeit`, `cProfile`, `py-spy`). Use `set`/`dict` for O(1) membership; pick the right container.
+- Concurrency model matters because of the GIL: **`asyncio`** for high-concurrency I/O, **threads** for blocking I/O calls, **`multiprocessing`** (or vectorized numpy) for CPU-bound work. (Free-threaded 3.13+ is changing this — know your runtime.)
 
-### 5. Documentation
-- Comments explain *why*, not *what*. Docstrings (Google/NumPy style) document parameters, returns, and raised exceptions.
+## Common Mistakes
+- **Mutable default arguments** (`def f(x=[])`) → shared across calls; use `None` + assign inside.
+- **Bare `except:`** → swallows `KeyboardInterrupt`/bugs; catch specific types.
+- **`==` vs `is`** → `is` only for `None`/singletons, not value equality.
+- **Late-binding closures in loops** → capture with a default arg or `functools.partial`.
+- **String-concatenating in a loop** / building lists you immediately sum → use `join`/generators.
+- **`from module import *`** and deep relative imports → explicit imports.
+- **Threads for CPU-bound work** → GIL-bound; use processes or numpy.
 
 ## Examples
 
-**Idiomatic, typed, and safe**
+**Idiomatic, typed, safe**
 ```python
 from __future__ import annotations
-
 from collections import Counter
 from collections.abc import Iterable
 
-
 def top_words(words: Iterable[str], n: int = 3) -> list[tuple[str, int]]:
-    """Return the ``n`` most common words, case-insensitively."""
-    counts = Counter(w.casefold() for w in words if w)
-    return counts.most_common(n)
+    """Return the n most common non-empty words, case-insensitively."""
+    return Counter(w.casefold() for w in words if w).most_common(n)
 ```
 
-**Async I/O fan-out with bounded concurrency**
+**Async I/O with bounded concurrency**
 ```python
-import asyncio
-import httpx
-
+import asyncio, httpx
 
 async def fetch_all(urls: list[str], limit: int = 10) -> list[str]:
     sem = asyncio.Semaphore(limit)
     async with httpx.AsyncClient(timeout=10) as client:
-        async def one(url: str) -> str:
+        async def one(u: str) -> str:
             async with sem:
-                resp = await client.get(url)
-                resp.raise_for_status()
-                return resp.text
+                r = await client.get(u); r.raise_for_status()
+                return r.text
         return await asyncio.gather(*(one(u) for u in urls))
 ```
 
-**Anti-pattern to flag**
-```python
-def f(items=[]):        # mutable default — shared across calls
-    items.append(1)
-    return items
-# Fix: def f(items: list | None = None): items = items or []
-```
-
 ## See Also
-- `competitive-programming-expert` — algorithmic problem solving and fast I/O in Python.
-- `deep-learning-expert` — PyTorch/NumPy modeling on top of Python fundamentals.
-- `github-master` — packaging, CI, and release workflows for Python projects.
-- `rules/python-style-guide.md` — enforceable style rules for `.py` files.
+- `competitive-programming-expert` — algorithmic Python + fast I/O.
+- `deep-learning-expert` — PyTorch/NumPy on Python fundamentals.
+- `testing-expert` — `pytest`, fixtures, fakes. `performance-expert` — profiling.
+- `rules/python-style-guide.md` — enforceable style rules.

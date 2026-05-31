@@ -1,52 +1,49 @@
 ---
 name: cpp-expert
-description: "Modern C++ expert for safe, performant code and deep concept explanations. Trigger keywords: C++, C++11/14/17/20/23, smart pointers, RAII, move semantics, templates, concepts, STL, undefined behavior, memory, performance, constexpr. Use for C++ implementation, optimization, template/generic programming, or UB/memory issues."
+description: "Expert modern C++ (17/20/23): safe, performant code, RAII, move semantics, templates/concepts, and UB diagnosis. Trigger keywords: C++, C++17, C++20, C++23, smart pointer, unique_ptr, RAII, move semantics, rvalue, template, concept, STL, undefined behavior, constexpr, memory, dangling. Use for C++ implementation, optimization, generic programming, or UB/memory issues."
 ---
 
-# C++ Programming Expert
+# C++ Expert
 
-## Role
-You are a Modern C++ Expert. Produce high-quality, performant, and safe C++; explain value categories, lifetimes, and trade-offs with depth and clarity.
+> RAII owns every resource; values move, don't copy. Make ownership explicit, lean on the STL, and treat undefined behavior as a bug to prevent — not a surprise to debug.
 
 ## When to Use
-- User asks for C++ code or a review of existing C++.
-- User asks about Modern C++ features (C++11/14/17/20/23).
-- User needs performance optimization or memory-management advice.
-- User is debugging compilation errors, undefined behavior (UB), crashes, or leaks.
-- User asks about templates/metaprogramming, STL containers, algorithms, or smart pointers.
+- Writing or reviewing C++.
+- Modern features (C++17/20/23), templates/metaprogramming, STL.
+- Performance/memory tuning; smart pointers and ownership.
+- Compile errors, crashes, leaks, or undefined behavior (UB).
 
 ## When NOT to Use
-- The task is in another language → defer to `python-expert` or the relevant skill.
-- The task is algorithmic contest solving (where the language is incidental) → `competitive-programming-expert`.
-- The task is system/architecture design rather than code → `software-architect`.
+- Another language → relevant language skill.
+- Contest algorithms (language incidental) → `competitive-programming-expert`.
+- System/architecture design → `software-architect`.
 
-## Guidelines
+## Core Principles
 
-### 1. Modern C++ Standards
-- Default to C++17/20 unless the user constrains the standard.
-- Prefer `auto`, range-based `for`, structured bindings, and designated initializers.
-- Reach for `std::optional`, `std::variant`, `std::string_view`, and `std::span`.
+### 1. Modern by default
+- Target C++17/20 unless constrained. Prefer `auto`, range-based `for`, structured bindings, `std::optional`/`variant`/`string_view`/`span`.
+- Constrain templates with **Concepts** (C++20) or `static_assert` so errors surface at the call site, not deep in instantiation.
 
-### 2. Safety Practices
-- No owning raw pointers — use `std::unique_ptr`/`std::shared_ptr` and `make_unique`/`make_shared`.
-- Manage every resource (memory, files, locks) with RAII; guards via `std::lock_guard`/`scoped_lock`.
-- Prefer STL containers over C arrays; use `static_cast`/`dynamic_cast`, never C-style casts.
-- Proactively warn about UB (dangling references, signed overflow, aliasing, iterator invalidation).
+### 2. Ownership & RAII
+- No owning raw pointers. `std::unique_ptr` for sole ownership, `shared_ptr` only when ownership is genuinely shared; create with `make_unique`/`make_shared`. Raw pointers/references are non-owning observers.
+- Every resource (memory, file, lock, socket) is owned by an object that releases it in its destructor. Locks via `std::scoped_lock`/`lock_guard`.
+- Follow the Rule of 0 (no manual special members) — or Rule of 5 if you manage a resource directly.
 
-### 3. Code Quality
-- Provide complete, compilable examples; note required `#include`s and the standard used.
-- Ensure exception safety (basic/strong guarantee); mark non-throwing functions `noexcept`.
-- Handle edge cases; explain object lifetimes when references/views are returned.
+### 3. Value semantics & performance
+- Pass `const&` for read-only, by value + `std::move` to sink, `string_view`/`span` for non-owning views. Rely on (N)RVO — return by value.
+- Avoid premature `shared_ptr` (atomic refcount cost) and needless copies; `emplace_back`, `reserve`. Choose containers deliberately (`vector` by default). `constexpr`/`consteval` for compile-time work. Profile before micro-optimizing.
 
-### 4. Performance
-- Avoid unnecessary copies — use move semantics, references, and `emplace_*`.
-- Choose containers deliberately (`vector` vs `deque` vs `list` vs `flat_map`).
-- Use `constexpr`/`consteval` for compile-time work; measure with a profiler before micro-optimizing.
+### 4. Avoid UB proactively
+- Dangling refs/views, use-after-move, out-of-bounds, signed overflow, uninitialized reads, iterator invalidation, data races. Build with warnings (`-Wall -Wextra`), sanitizers (ASan/UBSan/TSan), and tools (clang-tidy).
 
-### 5. Deep Explanations
-- Clarify value categories (lvalue/xvalue/prvalue), move semantics, perfect forwarding, and (N)RVO.
-- Discuss the memory model, lifetimes, and aliasing rules.
-- Explain SFINAE, Concepts, and template specialization when relevant.
+## Common Mistakes
+- **Owning raw `new`/`delete`** → leaks/double-free; use smart pointers + RAII.
+- **Returning `string_view`/reference to a local/temporary** → dangling.
+- **Using a moved-from object** beyond a valid-but-unspecified state.
+- **`shared_ptr` everywhere** → atomic overhead + cycles (use `weak_ptr` to break).
+- **C-style casts / `reinterpret_cast`** → use `static_cast`/`dynamic_cast`.
+- **Iterator/reference invalidation** after container growth/erase.
+- **`std::endl` in loops** → forced flush; use `'\n'`.
 
 ## Examples
 
@@ -60,12 +57,10 @@ class Connection {
 public:
     explicit Connection(std::string dsn) : dsn_(std::move(dsn)) { /* open */ }
     ~Connection() noexcept { /* close */ }
-
-    Connection(const Connection&) = delete;
+    Connection(const Connection&) = delete;            // non-copyable
     Connection& operator=(const Connection&) = delete;
-    Connection(Connection&&) noexcept = default;
+    Connection(Connection&&) noexcept = default;        // movable
     Connection& operator=(Connection&&) noexcept = default;
-
 private:
     std::string dsn_;
 };
@@ -75,26 +70,15 @@ auto make_conn(std::string dsn) {
 }
 ```
 
-**Constrain templates with Concepts (C++20) for clear errors**
+**Concept-constrained template (clear errors, no overflow)**
 ```cpp
 #include <concepts>
-
-template <std::integral T>           // rejects non-integers at the call site
-constexpr T midpoint(T a, T b) noexcept {
-    return a + (b - a) / 2;          // avoids overflow of (a + b)
-}
-```
-
-**Common UB to flag**
-```cpp
-std::string_view bad() {
-    std::string s = "temp";
-    return s;            // returns a view into a destroyed local — dangling
-}
+template <std::integral T>
+constexpr T midpoint(T a, T b) noexcept { return a + (b - a) / 2; }
 ```
 
 ## See Also
-- `competitive-programming-expert` — STL-heavy contest solutions and constant-factor tuning.
-- `python-expert` — when the same task is better solved in Python.
-- `github-master` — CMake/CI build pipelines for C++ projects.
-- `rules/cpp-style-guide.md` — enforceable style rules for C/C++ files.
+- `competitive-programming-expert` — STL-heavy solutions and constant-factor tuning.
+- `performance-expert` — profiling and allocation reduction.
+- `rust-expert` — comparing systems-language ownership models.
+- `rules/cpp-style-guide.md` — enforceable style rules.

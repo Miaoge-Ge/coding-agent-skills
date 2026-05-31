@@ -1,59 +1,78 @@
 ---
 name: prompt-engineering-expert
-description: "Prompt engineering expert: prompt structure, few-shot, chain-of-thought, output formatting, and iteration. Trigger keywords: prompt, prompt engineering, system prompt, few-shot, chain-of-thought, output format, JSON mode, instructions, LLM. Use for writing, debugging, or optimizing prompts for LLMs."
+description: "Expert prompt engineering: prompt structure, few-shot, chain-of-thought, structured output, and iteration. Trigger keywords: prompt, prompt engineering, system prompt, few-shot, chain-of-thought, output format, JSON schema, structured output, instructions, role, examples, eval. Use for writing, debugging, or optimizing prompts for LLMs."
 ---
 
 # Prompt Engineering Expert
 
-## Role
-You are a Prompt Engineering Expert. Turn vague intent into clear, structured prompts that produce reliable, well-formatted model output.
+> Examples beat adjectives; structure beats length. Tell the model who it is, what success looks like, and the exact output shape — then iterate against fixed test cases, changing one thing at a time.
 
 ## When to Use
-- User writes or improves a system/user prompt.
-- User gets inconsistent, off-format, or low-quality model output.
-- User needs structured output (JSON/schema) or few-shot examples.
-- User designs prompts for agents, extraction, classification, or generation.
+- Writing or improving a system/user prompt.
+- Inconsistent, off-format, verbose, or low-quality model output.
+- Needing structured output (JSON/schema), extraction, classification, or agents.
+- Reducing hallucination or steering tone/length/reasoning.
 
 ## When NOT to Use
-- Retrieval/context-assembly pipelines → `rag-expert`.
-- Quantitative evaluation/regression → `llm-testing-expert`.
+- Retrieval/context assembly → `rag-expert`.
+- Quantitative eval/regression harness → `llm-testing-expert`.
 - Model training/fine-tuning → `deep-learning-expert`.
+- Anthropic SDK wiring + caching → `claude-api` (built-in).
 
-## Guidelines
+## Core Principles
 
-### 1. Structure
-- State **role, task, and success criteria** explicitly. Put durable instructions in the system prompt, the variable task in the user turn.
-- Use clear delimiters (markdown headings, XML-like tags) to separate instructions, context, and data.
-- Be specific about constraints: length, tone, what to do on ambiguity or missing info.
+### 1. Structure the prompt
+- State **role, task, and success criteria** explicitly. Durable rules → system prompt; the variable task/data → user turn.
+- Separate sections with clear delimiters (markdown headings or XML-like tags `<context>…</context>`) so instructions, data, and examples don't blur.
+- Be specific about constraints: length, tone, audience, and what to do on ambiguity or missing info. Prefer positive instructions ("respond in valid JSON") over a pile of "don't".
 
-### 2. Steer behavior
-- Give **few-shot examples** for format and edge cases — examples beat adjectives. Make them representative and diverse.
-- For reasoning-heavy tasks, allow the model to think step by step before the final answer; keep visible output concise.
-- Prefer positive instructions ("respond in valid JSON") over piles of "don't".
+### 2. Steer with examples & reasoning
+- **Few-shot**: 2–5 representative, diverse examples that demonstrate the exact format and tricky edge cases. Examples teach format faster than descriptions.
+- For reasoning-heavy tasks, let the model think before answering (chain-of-thought / a scratchpad), but keep the **final** output concise — or separate reasoning from the user-visible answer.
+- Put the most important instruction near the start or end; long middles get "lost".
 
-### 3. Reliable output
-- For machine consumption, demand a strict schema and use the provider's structured-output/JSON mode; show one example of the exact shape.
-- Define a fallback ("if unknown, return null") so the model doesn't invent values.
+### 3. Reliable structured output
+- For machine consumption, define a strict schema and use the provider's structured-output/JSON mode or tool-calling. Show **one** example of the exact shape.
+- Provide a fallback so the model doesn't invent values: "if a field is unknown, use null; do not guess."
 
-### 4. Iterate
-- Change one variable at a time and test against a small fixed set of inputs (including hard cases). Version your prompts.
+### 4. Iterate like an engineer
+- Build a small fixed test set including hard/adversarial cases. Change **one variable at a time**, compare outputs, and **version** prompts. Don't trust a single lucky run.
+- Watch for prompt injection when user content is included; keep instructions and untrusted data clearly separated and don't let data override rules.
+
+## Common Mistakes
+- **Vague asks** ("make it good") → specify criteria, format, length.
+- **Conflicting/buried instructions** → consolidate; structure with delimiters.
+- **No examples for format-sensitive tasks** → add few-shot.
+- **Forcing CoT into the user-facing answer** → separate or hide reasoning.
+- **Over-stuffing** the prompt → signal drops; trim to what changes behavior.
+- **Free-text parsing** of "JSON-ish" output → use real structured-output mode + a schema.
+- **Tuning on one example** → use a test set; one input overfits.
 
 ## Examples
 
-**Structured extraction prompt**
+**Structured extraction with schema + fallback**
 ```text
 System: You extract structured data. Output ONLY valid JSON matching the schema.
 Schema: { "name": string, "amount": number, "currency": string|null }
-Rules: If a field is absent in the text, use null. Do not guess.
+Rules: If a field is absent in the text, use null. Do not guess or add fields.
 
 User:
 <text>
-Invoice from Acme for $1,250.00, net 30.
+Invoice from Acme Corp for $1,250.00, net 30.
 </text>
 ```
-Expected: `{ "name": "Acme", "amount": 1250.0, "currency": "USD" }`
+Expected: `{ "name": "Acme Corp", "amount": 1250.0, "currency": "USD" }`
+
+**Few-shot classifier (format by example)**
+```text
+Classify sentiment as positive | neutral | negative.
+"Loved it" -> positive
+"It arrived" -> neutral
+"Broke in a day" -> negative
+"Does the job, nothing special" ->
+```
 
 ## See Also
-- `rag-expert` — grounding prompts with retrieved context.
+- `rag-expert` — grounding prompts with retrieved, cited context.
 - `llm-testing-expert` — evaluating prompt changes objectively.
-- `claude-api` (built-in) — wiring prompts into the Anthropic SDK with caching.
+- `claude-api` (built-in) — Anthropic SDK, tool use, and prompt caching.

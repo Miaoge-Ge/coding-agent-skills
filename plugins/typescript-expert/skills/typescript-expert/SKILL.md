@@ -1,47 +1,67 @@
 ---
 name: typescript-expert
-description: "TypeScript expert for the type system, generics, and strict-mode safety. Trigger keywords: TypeScript, types, generics, type narrowing, tsconfig, discriminated unions, utility types, declaration files, type errors. Use for typing code, fixing type errors, or designing type-safe APIs."
+description: "Expert TypeScript: type system, generics, narrowing, inference, and strict-mode safety. Trigger keywords: TypeScript, types, generics, type narrowing, tsconfig, strict, discriminated union, conditional/mapped types, utility types, declaration files, type error, satisfies, infer, any vs unknown. Use when writing/refactoring TS, fixing cryptic type errors, designing type-safe/generic APIs, or configuring the compiler."
 ---
 
 # TypeScript Expert
 
-## Role
-You are a TypeScript Expert. Write precise, maintainable types that catch bugs at compile time without fighting the compiler or resorting to `any`.
+> Make illegal states unrepresentable. Let inference do the work; annotate boundaries, not internals. `any` is a hole in the type system — reach for `unknown` + narrowing instead.
 
 ## When to Use
-- User writes or refactors TypeScript and wants strong typing.
-- User hits a confusing type error and needs it explained or fixed.
-- User designs generic, reusable APIs or library types.
-- User configures `tsconfig.json` or migrates JS → TS.
-- User needs help with discriminated unions, conditional/mapped types, or declaration files.
+- Writing or refactoring TypeScript and wanting types that catch real bugs.
+- A cryptic type error needs explaining or fixing (`not assignable`, `excessively deep`, variance complaints).
+- Designing generic, reusable library types or public API surfaces.
+- Configuring `tsconfig.json`, writing `.d.ts`, or migrating JS → TS.
 
 ## When NOT to Use
-- Runtime/algorithm logic unrelated to typing → `python-expert` / language skill.
-- React-specific component patterns → `react-expert`.
+- Runtime/algorithm logic unrelated to typing → relevant language skill.
+- React-specific component/hook patterns → `react-expert`.
 - Backend framework wiring → `nodejs-backend-expert`.
 
-## Guidelines
+## Core Principles
 
-### 1. Strictness first
-- Enable `strict: true` (and `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes` for libraries).
-- Treat `any` as a smell; prefer `unknown` at boundaries and narrow with type guards.
+### 1. Strictness is non-negotiable
+- `strict: true` is the floor. Add `noUncheckedIndexedAccess` (array access is `T | undefined`), and for libraries `exactOptionalPropertyTypes` + `noImplicitOverride`.
+- Don't disable `strict` to "make it compile" — the error is usually a real bug. Fix the model.
 
-### 2. Model data with the type system
-- Use **discriminated unions** for state machines and variant data.
-- Prefer `interface` for object shapes that may be extended; `type` for unions/intersections/mapped types.
-- Derive types instead of duplicating them: `ReturnType`, `Parameters`, `keyof`, indexed access, `satisfies`.
+### 2. `any` vs `unknown`
+- `any` disables checking and silently spreads. Ban it (`@typescript-eslint/no-explicit-any`).
+- At untyped boundaries (JSON, `catch`, 3rd-party) use `unknown`, then **narrow** with a guard or schema (`zod`) before use.
 
-### 3. Generics with constraints
-- Constrain type parameters (`<T extends ...>`) so errors surface at the call site.
-- Avoid over-genericizing — only add a type parameter when callers vary the type.
+### 3. Let inference work; annotate intent
+- Annotate function **parameters** and public **return types**; let locals infer.
+- Use `as const` for literal tuples/objects, and `satisfies` to validate a value against a type **without widening** it (keeps the precise inferred type).
 
-### 4. Narrowing & guards
-- Use `typeof`/`in`/`instanceof`, custom type predicates (`x is T`), and assertion functions.
-- Use `never` in exhaustive `switch` defaults to catch unhandled cases at compile time.
+### 4. Model with the type system
+- **Discriminated unions** for state/variants; a shared literal `kind`/`status` field unlocks exhaustive narrowing.
+- Derive, don't duplicate: `ReturnType`, `Parameters`, `Awaited`, `keyof`, indexed access (`T["field"]`), `Pick`/`Omit`/`Record`.
+- Newtype/branded types for domain values (`type UserId = string & { __brand: "UserId" }`) to stop mixing IDs.
+
+### 5. Generics with constraints
+- Add a type parameter only when callers vary the type. Constrain it (`<T extends ...>`) so errors surface at the call site, not deep inside.
+- Use `infer` in conditional types to extract; avoid gratuitous deep conditional types (slow + unreadable).
+
+## Decision Guide
+| Situation | Use |
+|-----------|-----|
+| Object shape, may be extended/implemented | `interface` |
+| Unions, intersections, mapped/conditional, tuples | `type` |
+| Validate a literal without losing its narrow type | `satisfies` |
+| Untrusted external data | `unknown` + `zod`/guard |
+| One of N known variants | discriminated union + exhaustive `switch` |
+| Prevent mixing same-typed domain values | branded type |
+
+## Common Mistakes
+- **Type assertions (`as`) to silence errors** → hides real mismatches. Narrow or fix the type instead; `as` only when you genuinely know more than the compiler (and add a comment why).
+- **`enum`** → prefer `as const` union (`type Role = "admin" | "user"`); enums have runtime cost and odd semantics.
+- **Non-null `!` everywhere** → masks `undefined` bugs; narrow with a guard or restructure.
+- **`Function`, `object`, `{}` as types** → far too wide. `{}` means "anything but null/undefined".
+- **Optional vs `undefined` confusion** → `a?: T` and `a: T | undefined` differ under `exactOptionalPropertyTypes`.
+- **`any` in catch** → it's `unknown` since TS 4.4; narrow `if (e instanceof Error)`.
 
 ## Examples
 
-**Discriminated union + exhaustive handling**
+**Discriminated union + exhaustive `never` check**
 ```ts
 type Result<T> =
   | { status: "ok"; data: T }
@@ -52,29 +72,32 @@ function unwrap<T>(r: Result<T>): T {
     case "ok": return r.data;
     case "error": throw new Error(r.error);
     default: {
-      const _exhaustive: never = r; // compile error if a variant is added
-      return _exhaustive;
+      const _: never = r; // compile error if a new variant is added
+      return _;
     }
   }
 }
 ```
 
-**`satisfies` keeps inference while validating shape**
+**`satisfies` keeps precise inference while validating shape**
 ```ts
-const config = {
-  port: 3000,
-  host: "localhost",
-} satisfies Record<string, string | number>; // config.port stays `number`
+const routes = {
+  home: "/",
+  user: (id: string) => `/users/${id}`,
+} satisfies Record<string, string | ((...a: any[]) => string)>;
+routes.home;        // type is "/" (not widened to string)
+routes.user("42");  // typed callable
 ```
 
-**Type predicate guard**
+**Type predicate + branded id**
 ```ts
-function isString(x: unknown): x is string {
-  return typeof x === "string";
-}
+type UserId = string & { readonly __brand: unique symbol };
+const asUserId = (s: string): UserId => s as UserId;     // single controlled cast
+function isNonEmpty<T>(a: T[]): a is [T, ...T[]] { return a.length > 0; }
 ```
 
 ## See Also
-- `react-expert` — typing components, props, hooks, and events.
-- `nodejs-backend-expert` — typing request/response handlers and config.
-- `api-design-expert` — sharing types across client and server contracts.
+- `react-expert` — typing props, hooks, events, and generics in components.
+- `nodejs-backend-expert` — typing handlers, config, and validated input.
+- `api-design-expert` — sharing contract types across client/server.
+- `refactoring-expert` — tightening types as a safe, incremental refactor.

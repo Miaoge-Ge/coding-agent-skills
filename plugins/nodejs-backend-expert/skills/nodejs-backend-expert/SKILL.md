@@ -1,70 +1,95 @@
 ---
 name: nodejs-backend-expert
-description: "Node.js backend expert for Express/Fastify/Hono services: routing, middleware, auth, and async. Trigger keywords: Node.js, Express, Fastify, Hono, REST, middleware, JWT, async, streams, backend, server. Use for building HTTP services, structuring backends, or fixing async/error-handling issues."
+description: "Expert Node.js backends (Express/Fastify/Hono): routing, middleware, validation, auth, async, and production hardening. Trigger keywords: Node.js, Express, Fastify, Hono, REST, middleware, JWT, session, zod, async, streams, unhandled rejection, graceful shutdown, backend, server. Use for building HTTP services, structuring backends, or fixing async/error/security issues."
 ---
 
 # Node.js Backend Expert
 
-## Role
-You are a Node.js Backend Expert. Build robust, secure HTTP services with clean layering, proper async error handling, and sensible middleware.
+> The boundary is hostile: validate input, handle every rejection, and never trust the client. Keep handlers thin, push logic into services, and make the process production-safe (timeouts, health, graceful shutdown).
 
 ## When to Use
-- User builds an HTTP API/service in Node (Express, Fastify, Hono, etc.).
-- User adds routing, middleware, validation, auth, or rate limiting.
-- User has unhandled-rejection, error-propagation, or streaming issues.
-- User structures a backend project (routes → services → data layer).
+- Building/structuring an HTTP API or service in Node (Express, Fastify, Hono…).
+- Routing, middleware, input validation, auth, sessions, rate limiting.
+- Unhandled-rejection, error-propagation, streaming, or backpressure issues.
+- Project layout: transport → service → data layer.
 
 ## When NOT to Use
-- Next.js-specific server features → `nextjs-expert`.
-- Pure SQL/schema design → `sql-expert`.
-- API contract/versioning design → `api-design-expert`.
+- Next.js server features (RSC, server actions) → `nextjs-expert`.
+- SQL/schema/indexing → `sql-expert`. API contract design → `api-design-expert`.
+- Deep auth threat modeling/OWASP → `security-expert`.
 
-## Guidelines
+## Core Principles
 
-### 1. Structure & layering
-- Separate transport (routes/controllers), business logic (services), and data access. Keep handlers thin.
-- Load config from env with validation (e.g., `zod`); fail fast on missing config.
+### 1. Layering
+- Handlers/controllers stay thin (parse → call service → format response). Business logic lives in services; data access is isolated and mockable.
+- Load config from env, **validated at startup** (`zod`/`envalid`); fail fast on missing/invalid config. No `process.env.X` scattered through code.
 
-### 2. Async & errors
-- Use `async/await`; never leave promise rejections unhandled. Wrap handlers so thrown errors hit a central error middleware.
-- Validate and sanitize all input at the boundary (`zod`/`valibot`). Return structured error responses with correct status codes.
+### 2. Async & error discipline
+- `async/await` throughout. Every route's thrown error must reach a **central error handler** — wrap async handlers (or use Fastify/Express 5 which await handlers natively).
+- Attach `process.on("unhandledRejection")`/`"uncaughtException"` to log and exit; don't swallow.
+- Validate request body/query/params at the edge with a schema; reject early with 400 and a structured error.
 
-### 3. Security
-- Set security headers (`helmet`), enable CORS deliberately, and rate-limit public endpoints.
-- Hash passwords with `bcrypt`/`argon2`; sign JWTs/sessions with secrets from env; never log secrets or tokens.
+### 3. Security baseline
+- `helmet` for headers, explicit CORS allowlist, rate limiting on public/auth routes.
+- Hash passwords with `argon2`/`bcrypt`; sign tokens/sessions with env secrets; cookies `HttpOnly`+`Secure`+`SameSite`. Never log secrets, tokens, or full request bodies with PII.
+- Parameterize all DB access (no string-built SQL); cap body size.
 
-### 4. Production-readiness
-- Add `/health` and graceful shutdown (drain connections on `SIGTERM`).
-- Stream large payloads instead of buffering; set timeouts.
+### 4. Production-ready process
+- `/health` (liveness) + readiness; **graceful shutdown** on `SIGTERM` (stop accepting, drain in-flight, close DB pool).
+- Set server/socket timeouts. **Stream** large responses/uploads instead of buffering. Structured logging (`pino`) with request IDs.
+
+## Decision Guide
+| Need | Reach for |
+|------|-----------|
+| Max performance / schema-first | Fastify |
+| Minimal/edge/runtime-agnostic | Hono |
+| Ubiquitous ecosystem / familiarity | Express (use v5 for async error handling) |
+| Input validation | `zod` / `valibot` at the boundary |
+| Heavy CPU work | worker_threads / separate service (don't block the event loop) |
+
+## Common Mistakes
+- **Blocking the event loop** (sync crypto/`fs`, big JSON, CPU loops) → stalls all requests; offload to workers/streams.
+- **Unhandled async errors** in Express 4 (thrown in a promise) → use a wrapper or Express 5.
+- **Trusting client input** (mass assignment, unvalidated query) → validate + allowlist fields.
+- **Catch-and-ignore** (`catch (e) {}`) → log with context and respond appropriately.
+- **No timeouts / no shutdown** → hung sockets and dropped requests on deploy.
+- **Secrets in code or logs** → env + secret manager; redact logs.
 
 ## Examples
 
-**Central async error handling (Express)**
+**Central async error handling + validation (Express 5)**
 ```js
 import express from "express";
 import { z } from "zod";
 
 const app = express();
-app.use(express.json());
+app.use(express.json({ limit: "1mb" }));
 
-const wrap = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
+const Body = z.object({ email: z.string().email(), name: z.string().min(1) });
 
-const Body = z.object({ email: z.string().email() });
-
-app.post("/users", wrap(async (req, res) => {
-  const body = Body.parse(req.body);        // throws on invalid -> error middleware
+app.post("/users", async (req, res) => {          // Express 5 awaits handlers
+  const body = Body.parse(req.body);               // throws -> error middleware
   const user = await userService.create(body);
   res.status(201).json(user);
-}));
+});
 
 app.use((err, _req, res, _next) => {
-  const status = err.name === "ZodError" ? 400 : 500;
-  res.status(status).json({ error: err.message });
+  const status = err?.name === "ZodError" ? 400 : 500;
+  if (status === 500) logger.error({ err }, "unhandled");
+  res.status(status).json({ error: { message: err.message } });
 });
 ```
 
+**Graceful shutdown**
+```js
+const server = app.listen(3000);
+for (const sig of ["SIGTERM", "SIGINT"]) {
+  process.on(sig, () => server.close(() => db.end().then(() => process.exit(0))));
+}
+```
+
 ## See Also
-- `api-design-expert` — endpoint contracts, versioning, and pagination.
-- `sql-expert` — the data layer behind your services.
+- `api-design-expert` — endpoint contracts, versioning, pagination.
+- `sql-expert` — the data layer behind services.
 - `security-expert` — authn/authz and OWASP hardening.
-- `docker-expert` — containerizing the service.
+- `docker-expert` / `kubernetes-expert` — packaging and running the service.

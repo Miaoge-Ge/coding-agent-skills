@@ -1,91 +1,83 @@
 ---
 name: github-master
-description: "Git and GitHub expert for workflows, repository management, PRs, and Actions CI/CD. Trigger keywords: git, GitHub, merge conflict, rebase, cherry-pick, reflog, pull request, branch protection, GitHub Actions, CI/CD, release. Use for Git troubleshooting, collaboration setup, or automation — not for application code itself."
+description: "Expert Git & GitHub: workflows, history recovery, pull requests, branch protection, and Actions CI/CD. Trigger keywords: git, GitHub, merge conflict, rebase, cherry-pick, reflog, bisect, force push, pull request, branch protection, GitHub Actions, CI/CD, release, conventional commits. Use for Git troubleshooting, collaboration/automation setup, or recovering lost work."
 ---
 
 # GitHub Master
 
-## Role
-You are a Git and GitHub Expert. Help users manage repositories, master Git workflows, configure CI/CD, and collaborate effectively on open-source or private projects.
+> Commits are cheap, lost work is recoverable (reflog), and history is communication. Rebase your own local work, never shared history; force-push only with `--force-with-lease`.
 
 ## When to Use
-- User asks about Git commands or is stuck (merge conflicts, detached HEAD, lost commits).
-- User needs help with repository management, PRs, issues, or branch protection.
-- User asks about branching workflows or GitHub Actions.
-- User needs to undo/recover changes (`reset`, `revert`, `reflog`, `stash`).
-- User maintains an open-source project and wants community/automation best practices.
+- Git commands or trouble: conflicts, detached HEAD, lost commits, undo/redo.
+- Repo management, PRs, issues, branch protection, CODEOWNERS.
+- Branching strategy or GitHub Actions CI/CD.
+- Recovering or rewriting history safely.
 
 ## When NOT to Use
-- The task is writing application logic in a language → use the relevant language skill.
-- The task is high-level system design → `software-architect`.
-- The CI need is really about test design rather than pipelines → `llm-testing-expert` / language skill.
+- Writing application code → relevant language skill.
+- High-level system design → `software-architect`.
+- Shell logic inside workflows → `bash-scripting-expert`.
 
-## Guidelines
+## Core Principles
 
-### 1. Git Core Operations
-- Explain `clone`, `add`, `commit`, `push`, `pull`, `branch`, `merge`, `rebase`.
-- Troubleshoot conflicts; recover with `reset`/`revert` and find lost work via `reflog`.
-- Advanced: `cherry-pick`, interactive rebase, `stash`, `bisect`, `worktree`.
-- When suggesting history-rewriting commands (`reset --hard`, `push --force`), warn about data loss and prefer `--force-with-lease`.
+### 1. Core operations & recovery
+- Fluent with `add`/`commit`/`push`/`pull`/`branch`/`merge`/`rebase`, plus `stash`, `cherry-pick`, `bisect`, `worktree`.
+- **Almost nothing is truly lost**: `git reflog` finds detached/`reset`-away commits. Prefer `git revert` (safe, new commit) over `reset --hard` on anything shared.
+- Undo map: un-add → `restore --staged`; amend last (local) commit → `commit --amend`; move branch pointer → `reset`; recover → `reflog` + `checkout -b`.
 
-### 2. Repository Management
-- Essential files: `README.md`, `LICENSE`, `.gitignore`, `CONTRIBUTING.md`, `CODEOWNERS`.
-- Protect `main` with branch-protection rules and required status checks.
-- Provide issue and pull-request templates under `.github/`.
+### 2. Rewriting history — the safety rule
+- Rewrite **only local, unpushed** commits (interactive rebase to clean up). **Never** rewrite shared/`main` history.
+- If you must update a shared branch after rebase, use `git push --force-with-lease` (refuses if someone else pushed) — never plain `--force`.
 
-### 3. Workflows
-- **GitHub Flow** (recommended): `main` + short-lived feature branches.
-- **Git Flow**: release-heavy projects with `develop`/`release` branches.
-- Use **Conventional Commits** (`feat:`, `fix:`, `docs:`) to enable automated changelogs/versioning.
+### 3. Workflow & commits
+- **GitHub Flow** (main + short-lived feature branches) for most teams; Git Flow only for heavy release trains. Protect `main` with required reviews + status checks; use CODEOWNERS and PR/issue templates.
+- **Conventional Commits** (`feat:`, `fix:`, `docs:`) enable automated changelogs/SemVer. Small, focused PRs that explain *why*; link issues (`Fixes #123`). Know merge strategies: squash (clean linear history), merge commit (preserve context), rebase (linear, no merge commit).
 
-### 4. Pull Requests
-- Small scope, clear title, link issues (`Fixes #123`), and a description of *why*.
-- Review for logic, tests, and security — not just style.
-- Explain merge strategies: squash (clean history), merge commit (preserve context), rebase (linear).
+### 4. GitHub Actions CI/CD
+- Workflows in `.github/workflows/*.yml`: triggers (`on`), jobs, steps, runners. Cache dependencies (`actions/cache` or `setup-*` cache), use matrix builds, **pin action versions**, and scope `permissions:` to least privilege. Secrets via encrypted Secrets/Variables — never echo them.
 
-### 5. GitHub Actions CI/CD
-- Config lives in `.github/workflows/*.yml`: triggers (`on`), jobs, steps, runners.
-- Optimize with dependency caching (`actions/cache`) and matrix builds.
-- Manage credentials via encrypted **Secrets**/**Variables**; pin action versions; scope `permissions:`.
+## Common Mistakes
+- **`push --force`** on a shared branch → overwrites teammates' work; use `--force-with-lease`.
+- **`reset --hard`** to "undo" pushed commits → use `revert`.
+- **Rebasing a shared/public branch** → diverges everyone; rebase only local work.
+- **Committing secrets / large binaries** → use env/secret manager + `.gitignore`/LFS; rotate if leaked.
+- **Giant, mixed PRs** → hard to review; keep them small and single-purpose.
+- **Unpinned actions / over-broad `permissions`** → supply-chain and token risk.
+- **Panic after a bad `reset`/`rebase`** → check `git reflog` before despairing.
 
 ## Examples
 
-**Recover a commit deleted by a bad reset**
+**Recover a commit removed by a bad reset**
 ```bash
-git reflog                       # find the lost commit's SHA, e.g. a1b2c3d
+git reflog                          # find the lost SHA, e.g. a1b2c3d
 git checkout -b recovered a1b2c3d
 ```
 
-**Safely update a shared branch after rebase**
+**Safely update a feature branch after rebase**
 ```bash
 git rebase origin/main
-git push --force-with-lease      # refuses if someone else pushed meanwhile
+git push --force-with-lease         # refuses if remote moved underneath you
 ```
 
-**Minimal, cached CI workflow**
+**Minimal cached CI workflow (pinned, matrixed, least-priv)**
 ```yaml
 name: CI
-on:
-  pull_request:
-  push:
-    branches: [main]
+on: [pull_request]
+permissions: { contents: read }
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
-      matrix:
-        python-version: ["3.11", "3.12"]
+      matrix: { node: ["20", "22"] }
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: pip
-      - run: pip install -e .[test]
-      - run: pytest -q
+      - uses: actions/setup-node@v4
+        with: { node-version: "${{ matrix.node }}", cache: npm }
+      - run: npm ci
+      - run: npm test
 ```
 
 ## See Also
-- `software-architect` — translating system design into branching and release strategy.
-- `python-expert` / `cpp-expert` — the project code your pipelines build and test.
-- `llm-testing-expert` — wiring evaluation/regression suites into CI gates.
+- `software-architect` — turning design into branching/release strategy.
+- `bash-scripting-expert` — robust scripts inside workflows.
+- `docker-expert` / `kubernetes-expert` — building/deploying from CI.

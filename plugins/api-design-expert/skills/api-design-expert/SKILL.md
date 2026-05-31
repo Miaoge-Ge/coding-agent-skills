@@ -1,62 +1,76 @@
 ---
 name: api-design-expert
-description: "API design expert for REST and GraphQL: resource modeling, versioning, pagination, errors, and contracts. Trigger keywords: API design, REST, GraphQL, OpenAPI, endpoint, versioning, pagination, idempotency, status codes, contract. Use for designing or reviewing HTTP/GraphQL APIs and their contracts."
+description: "Expert API design for REST & GraphQL: resource modeling, status codes, versioning, pagination, idempotency, errors, and contracts. Trigger keywords: API design, REST, RESTful, GraphQL, OpenAPI, endpoint, status code, versioning, pagination, cursor, idempotency, rate limit, contract, schema. Use to design or review HTTP/GraphQL APIs and their contracts."
 ---
 
 # API Design Expert
 
-## Role
-You are an API Design Expert. Design clear, consistent, evolvable APIs that are easy to consume and hard to misuse.
+> Design for the consumer and for change. Consistency beats cleverness: predictable naming, one error shape, accurate status codes, additive evolution. The contract is the product.
 
 ## When to Use
-- User designs or reviews a REST/GraphQL API.
-- User decides on resource modeling, naming, versioning, or pagination.
-- User defines error formats, status codes, or idempotency.
-- User writes an OpenAPI/GraphQL schema or contract.
+- Designing or reviewing a REST/GraphQL API.
+- Resource modeling, naming, versioning, pagination, filtering.
+- Error formats, status codes, idempotency, rate limiting.
+- Writing an OpenAPI/GraphQL SDL contract.
 
 ## When NOT to Use
 - Implementing the server framework → `nodejs-backend-expert` / language skill.
-- Database schema/query design → `sql-expert`.
-- Overall system topology → `software-architect`.
+- DB schema/query design → `sql-expert`.
+- Overall system topology/scaling → `software-architect`.
 
-## Guidelines
+## Core Principles
 
 ### 1. Resource modeling (REST)
-- Model nouns, not verbs: `/orders/{id}/items`. Use plural collections.
-- Map methods correctly: GET (safe), POST (create), PUT (full replace, idempotent), PATCH (partial), DELETE (idempotent).
-- Use accurate status codes: 200/201/204, 400/401/403/404/409/422, 429, 500. Don't return 200 with an error body.
+- Nouns, plural collections, hierarchy for relationships: `GET /orders/{id}/items`. No verbs in paths (`/getOrder` ❌).
+- Methods carry semantics: **GET** safe & cacheable, **POST** create/non-idempotent, **PUT** full idempotent replace, **PATCH** partial, **DELETE** idempotent.
+- Accurate status codes: `200/201/204`; `400` (malformed) vs `422` (valid syntax, semantic error) vs `409` (conflict); `401` (unauthenticated) vs `403` (unauthorized); `404`; `429` (rate limit). **Never** `200` with an error body.
 
-### 2. Contracts & consistency
-- Define the contract first (OpenAPI/GraphQL SDL); keep field naming and casing consistent across endpoints.
-- Return a **consistent error shape** (`{ error: { code, message, details } }`) everywhere.
+### 2. One consistent contract
+- Single error envelope everywhere: `{ "error": { "code", "message", "details" } }` with a stable machine-readable `code`.
+- Consistent field naming/casing across all endpoints. Use ISO-8601 UTC timestamps, explicit currency/units, and string IDs. Document everything in OpenAPI/SDL — contract first.
 
-### 3. Evolution
-- Version at the edge (`/v1/...` or header) and add fields additively; never repurpose or remove fields silently.
-- Make writes **idempotent** where possible (idempotency keys for POST) and document side effects.
+### 3. Evolve without breaking
+- Version at the edge (`/v1`, or media-type/header). Change **additively**; never repurpose, retype, or silently drop a field. Deprecate with headers + sunset dates.
+- Make writes **idempotent**: support an `Idempotency-Key` for POST so retries don't double-charge. Document side effects.
 
-### 4. Collections & performance
-- Paginate large collections — prefer **cursor-based** pagination for large/changing data over offset.
-- Support filtering/sorting/sparse fields explicitly; document rate limits and auth.
+### 4. Collections & resilience
+- Paginate large collections — prefer **cursor/keyset** over offset for large or changing data. Provide filtering/sorting/field-selection explicitly and consistently.
+- Publish rate limits (headers), auth scheme, and idempotency semantics. Validate every input; return precise field-level errors.
 
 ### 5. REST vs GraphQL
-- REST for resource-centric, cacheable APIs; GraphQL when clients need flexible, nested selections — then guard against N+1 with dataloaders and limit query depth/cost.
+- REST for resource-centric, cacheable, simple-client APIs. GraphQL when clients need flexible nested selections — then prevent **N+1** with dataloaders, and limit query **depth/cost** to avoid abuse.
+
+## Common Mistakes
+- **`200` for errors** / inventing custom status semantics → use HTTP codes correctly.
+- **Inconsistent error shapes** across endpoints → one envelope.
+- **Offset pagination** on big datasets → slow + items skip/duplicate as data changes; use cursors.
+- **Breaking changes without versioning** → broken clients.
+- **Verbs in URLs / leaking DB schema** → model resources, not tables.
+- **Non-idempotent POST with client retries** → duplicates; add idempotency keys.
+- **Unbounded GraphQL queries** → DoS via deep/expensive queries.
 
 ## Examples
 
 **Consistent error + cursor pagination (REST)**
 ```json
-// GET /v1/orders?limit=20&cursor=eyJpZCI6MTIzfQ
+// GET /v1/orders?limit=20&cursor=eyJpZCI6MTQ0fQ
 {
-  "data": [ { "id": "ord_124", "total": 4200 } ],
-  "page": { "next_cursor": "eyJpZCI6MTQ0fQ", "has_more": true }
+  "data": [ { "id": "ord_124", "total": 4200, "currency": "USD" } ],
+  "page": { "next_cursor": "eyJpZCI6MTY0fQ", "has_more": true }
 }
-// Error response (any endpoint)
+// Error (same shape on every endpoint)
 { "error": { "code": "validation_error", "message": "email is invalid",
-             "details": [ { "field": "email" } ] } }
+             "details": [ { "field": "email", "rule": "format" } ] } }
+```
+
+**Idempotent create**
+```http
+POST /v1/payments
+Idempotency-Key: 5f3c…   # server returns the same result for retries with this key
 ```
 
 ## See Also
-- `nodejs-backend-expert` — implementing the endpoints.
-- `sql-expert` — backing pagination and filters efficiently.
-- `security-expert` — auth, scopes, and rate limiting.
-- `rag-expert` — designing retrieval/LLM endpoints.
+- `nodejs-backend-expert` — implementing endpoints and validation.
+- `sql-expert` — backing pagination/filters efficiently (keyset).
+- `security-expert` — auth, scopes, rate limiting.
+- `rag-expert` — designing retrieval/LLM endpoints and streaming responses.
