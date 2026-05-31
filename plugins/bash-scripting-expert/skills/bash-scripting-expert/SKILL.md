@@ -75,6 +75,12 @@ trap - EXIT
 printf 'wrote %s\n' "$out_file"
 ```
 
+## Bundled Resources
+- **`reference.md`** — strict-mode header, getopts parsing, quoting rules, the subshell-counter gotcha, portability table, idioms, pitfalls→fixes.
+- **`scripts/check.sh`** — `bash -n` + shellcheck + shfmt (degrades gracefully).
+- **`scripts/new-script.sh`** — scaffold a strict-mode script (getopts + EXIT-trap cleanup).
+- **`scripts/harden.sh`** — heuristic review for unquoted vars, backticks, missing strict mode, ls-parsing, etc.
+
 ## See Also
 - `github-master` — running scripts safely in GitHub Actions.
 - `docker-expert` — robust container entrypoint scripts.

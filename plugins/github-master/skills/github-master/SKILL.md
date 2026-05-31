@@ -77,6 +77,12 @@ jobs:
       - run: npm test
 ```
 
+## Bundled Resources
+- **`reference.md`** — branch-protection setup, CI templates, Conventional-Commits→release flow, a history-recovery cookbook, and merge strategies.
+- **`scripts/repo-health.sh`** — audit essential files, CI, binaries, and branch protection.
+- **`scripts/scaffold-ci.sh`** — least-privilege CI workflow + PR template + CODEOWNERS.
+- **`scripts/release-notes.sh`** — Markdown changelog from Conventional Commits.
+
 ## See Also
 - `software-architect` — turning design into branching/release strategy.
 - `bash-scripting-expert` — robust scripts inside workflows.

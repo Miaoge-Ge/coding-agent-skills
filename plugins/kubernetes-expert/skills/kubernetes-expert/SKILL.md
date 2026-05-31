@@ -72,6 +72,12 @@ spec:
           securityContext: { allowPrivilegeEscalation: false, readOnlyRootFilesystem: true }
 ```
 
+## Bundled Resources
+- **`reference.md`** — workload/probe/resource guidance, security baseline, rollout, Helm/Kustomize, and a troubleshooting playbook.
+- **`scripts/validate.sh`** — kubeconform/kubectl + best-practice heuristics (probes, resources, :latest, securityContext).
+- **`scripts/scaffold.sh`** — Deployment+Service with probes, resources, non-root securityContext.
+- **`scripts/troubleshoot.sh`** — gather pod status/describe/logs/events + quick-diagnosis cheatsheet.
+
 ## See Also
 - `docker-expert` — the images these workloads run.
 - `security-expert` — RBAC, NetworkPolicy, and secret handling.
