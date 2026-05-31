@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "docker-expert",
+  "displayName": "Docker Expert",
+  "version": "1.0.0",
+  "description": "Dockerfiles, multi-stage builds, image optimization, Compose, networking, and container best practices.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["docker", "containers", "dockerfile", "compose", "images"]
+}

@@ -125,8 +125,8 @@ new THREE.TubeGeometry(curve, 64, 0.2, 8, false);
 ### Text Geometry
 
 ```javascript
-import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
-import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
+import { FontLoader } from "three/addons/loaders/FontLoader.js";
+import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 const loader = new FontLoader();
 loader.load("fonts/helvetiker_regular.typeface.json", (font) => {
@@ -455,7 +455,7 @@ geometry.setAttribute("offset", new THREE.InstancedBufferAttribute(offsets, 3));
 ## Geometry Utilities
 
 ```javascript
-import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
 
 // Merge geometries (must have same attributes)
 const merged = BufferGeometryUtils.mergeGeometries([geo1, geo2, geo3]);

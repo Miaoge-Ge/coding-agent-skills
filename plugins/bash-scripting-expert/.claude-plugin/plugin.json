@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "bash-scripting-expert",
+  "displayName": "Bash Scripting Expert",
+  "version": "1.0.0",
+  "description": "Robust shell scripts: safe Bash, quoting, error handling, and portable POSIX patterns.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["bash", "shell", "scripting", "posix", "cli"]
+}

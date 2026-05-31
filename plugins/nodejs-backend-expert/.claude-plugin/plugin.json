@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "nodejs-backend-expert",
+  "displayName": "Node.js Backend Expert",
+  "version": "1.0.0",
+  "description": "Node.js backend services with Express/Fastify/Hono: routing, middleware, auth, and async patterns.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["nodejs", "express", "fastify", "backend", "api", "middleware"]
+}

@@ -214,7 +214,7 @@ action2.play();
 Most common source of skeletal animations.
 
 ```javascript
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 const loader = new GLTFLoader();
 loader.load("model.glb", (gltf) => {

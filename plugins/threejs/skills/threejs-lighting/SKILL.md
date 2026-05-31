@@ -181,8 +181,8 @@ spotLight.shadow.focus = 1;
 Rectangular area light. Great for soft, realistic lighting.
 
 ```javascript
-import { RectAreaLightHelper } from "three/examples/jsm/helpers/RectAreaLightHelper.js";
-import { RectAreaLightUniformsLib } from "three/examples/jsm/lights/RectAreaLightUniformsLib.js";
+import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js";
+import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 
 // Must initialize uniforms first
 RectAreaLightUniformsLib.init();
@@ -254,7 +254,7 @@ dirLight.shadow.normalBias = 0.02; // Bias along normal
 ### Contact Shadows (Fake, Fast)
 
 ```javascript
-import { ContactShadows } from "three/examples/jsm/objects/ContactShadows.js";
+import { ContactShadows } from "three/addons/objects/ContactShadows.js";
 
 const contactShadows = new ContactShadows({
   resolution: 512,
@@ -269,7 +269,7 @@ scene.add(contactShadows);
 ## Light Helpers
 
 ```javascript
-import { RectAreaLightHelper } from "three/examples/jsm/helpers/RectAreaLightHelper.js";
+import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js";
 
 // DirectionalLight helper
 const dirHelper = new THREE.DirectionalLightHelper(dirLight, 5);
@@ -301,7 +301,7 @@ spotHelper.update();
 Image-Based Lighting using HDR environment maps.
 
 ```javascript
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
 const rgbeLoader = new RGBELoader();
 rgbeLoader.load("environment.hdr", (texture) => {
@@ -350,7 +350,7 @@ scene.background = envMap;
 Capture lighting from a point in space for ambient lighting.
 
 ```javascript
-import { LightProbeGenerator } from "three/examples/jsm/lights/LightProbeGenerator.js";
+import { LightProbeGenerator } from "three/addons/lights/LightProbeGenerator.js";
 
 // Generate from cube texture
 const lightProbe = new THREE.LightProbe();

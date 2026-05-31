@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "go-expert",
+  "displayName": "Go Expert",
+  "version": "1.0.0",
+  "description": "Idiomatic Go: goroutines, channels, interfaces, error handling, and the standard library.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["go", "golang", "goroutines", "channels", "concurrency"]
+}

@@ -95,6 +95,226 @@
         "3d",
         "shaders"
       ]
+    },
+    {
+      "name": "typescript-expert",
+      "source": "./plugins/typescript-expert",
+      "description": "TypeScript type system, generics, narrowing, and strict-mode config for safe, maintainable JS/TS.",
+      "category": "languages",
+      "tags": [
+        "typescript",
+        "types",
+        "generics"
+      ]
+    },
+    {
+      "name": "rust-expert",
+      "source": "./plugins/rust-expert",
+      "description": "Rust ownership, borrowing, lifetimes, traits, async, and idiomatic error handling.",
+      "category": "languages",
+      "tags": [
+        "rust",
+        "ownership",
+        "borrow-checker"
+      ]
+    },
+    {
+      "name": "go-expert",
+      "source": "./plugins/go-expert",
+      "description": "Idiomatic Go: goroutines, channels, interfaces, error handling, and the standard library.",
+      "category": "languages",
+      "tags": [
+        "go",
+        "golang",
+        "goroutines"
+      ]
+    },
+    {
+      "name": "react-expert",
+      "source": "./plugins/react-expert",
+      "description": "Modern React (18/19): hooks, component patterns, state management, performance, and Server Components.",
+      "category": "frontend",
+      "tags": [
+        "react",
+        "hooks",
+        "jsx"
+      ]
+    },
+    {
+      "name": "nextjs-expert",
+      "source": "./plugins/nextjs-expert",
+      "description": "Next.js App Router, Server Components, server actions, routing, caching, and deployment.",
+      "category": "frontend",
+      "tags": [
+        "nextjs",
+        "app-router",
+        "rsc"
+      ]
+    },
+    {
+      "name": "tailwind-expert",
+      "source": "./plugins/tailwind-expert",
+      "description": "Tailwind CSS utility-first styling, responsive design, theming, and design-system patterns.",
+      "category": "frontend",
+      "tags": [
+        "tailwind",
+        "css",
+        "styling"
+      ]
+    },
+    {
+      "name": "accessibility-expert",
+      "source": "./plugins/accessibility-expert",
+      "description": "Web accessibility (a11y): WCAG, semantic HTML, ARIA, keyboard nav, and screen-reader support.",
+      "category": "frontend",
+      "tags": [
+        "accessibility",
+        "a11y",
+        "wcag"
+      ]
+    },
+    {
+      "name": "nodejs-backend-expert",
+      "source": "./plugins/nodejs-backend-expert",
+      "description": "Node.js backend services with Express/Fastify/Hono: routing, middleware, auth, and async patterns.",
+      "category": "backend",
+      "tags": [
+        "nodejs",
+        "express",
+        "fastify"
+      ]
+    },
+    {
+      "name": "api-design-expert",
+      "source": "./plugins/api-design-expert",
+      "description": "Designing REST and GraphQL APIs: resource modeling, versioning, pagination, errors, and contracts.",
+      "category": "backend",
+      "tags": [
+        "api",
+        "rest",
+        "graphql"
+      ]
+    },
+    {
+      "name": "sql-expert",
+      "source": "./plugins/sql-expert",
+      "description": "SQL queries, schema design, indexing, query optimization, and transactions across Postgres/MySQL/SQLite.",
+      "category": "data",
+      "tags": [
+        "sql",
+        "database",
+        "postgres"
+      ]
+    },
+    {
+      "name": "rag-expert",
+      "source": "./plugins/rag-expert",
+      "description": "Retrieval-Augmented Generation: chunking, embeddings, vector search, reranking, and grounded answers.",
+      "category": "ai-ml",
+      "tags": [
+        "rag",
+        "embeddings",
+        "vector-search"
+      ]
+    },
+    {
+      "name": "prompt-engineering-expert",
+      "source": "./plugins/prompt-engineering-expert",
+      "description": "Designing effective prompts: structure, few-shot, chain-of-thought, output formatting, and evaluation.",
+      "category": "ai-ml",
+      "tags": [
+        "prompt-engineering",
+        "llm",
+        "few-shot"
+      ]
+    },
+    {
+      "name": "docker-expert",
+      "source": "./plugins/docker-expert",
+      "description": "Dockerfiles, multi-stage builds, image optimization, Compose, networking, and container best practices.",
+      "category": "devops",
+      "tags": [
+        "docker",
+        "containers",
+        "dockerfile"
+      ]
+    },
+    {
+      "name": "kubernetes-expert",
+      "source": "./plugins/kubernetes-expert",
+      "description": "Kubernetes workloads: Deployments, Services, ConfigMaps, probes, resources, and troubleshooting.",
+      "category": "devops",
+      "tags": [
+        "kubernetes",
+        "k8s",
+        "deployments"
+      ]
+    },
+    {
+      "name": "bash-scripting-expert",
+      "source": "./plugins/bash-scripting-expert",
+      "description": "Robust shell scripts: safe Bash, quoting, error handling, and portable POSIX patterns.",
+      "category": "devops",
+      "tags": [
+        "bash",
+        "shell",
+        "scripting"
+      ]
+    },
+    {
+      "name": "testing-expert",
+      "source": "./plugins/testing-expert",
+      "description": "Test strategy and implementation: unit/integration/e2e, TDD, mocking, fixtures, and coverage.",
+      "category": "quality",
+      "tags": [
+        "testing",
+        "tdd",
+        "unit-tests"
+      ]
+    },
+    {
+      "name": "debugging-expert",
+      "source": "./plugins/debugging-expert",
+      "description": "Systematic debugging: reproduction, hypothesis testing, bisection, logging, and root-cause analysis.",
+      "category": "quality",
+      "tags": [
+        "debugging",
+        "troubleshooting",
+        "root-cause"
+      ]
+    },
+    {
+      "name": "refactoring-expert",
+      "source": "./plugins/refactoring-expert",
+      "description": "Safe, incremental refactoring: code smells, behavior-preserving transforms, and test-backed changes.",
+      "category": "quality",
+      "tags": [
+        "refactoring",
+        "code-smells",
+        "clean-code"
+      ]
+    },
+    {
+      "name": "performance-expert",
+      "source": "./plugins/performance-expert",
+      "description": "Profiling and optimizing CPU, memory, I/O, and rendering hotspots with measure-first methodology.",
+      "category": "quality",
+      "tags": [
+        "performance",
+        "profiling",
+        "optimization"
+      ]
+    },
+    {
+      "name": "security-expert",
+      "source": "./plugins/security-expert",
+      "description": "Secure coding and review: OWASP Top 10, input validation, authn/authz, secrets, and dependency safety.",
+      "category": "security",
+      "tags": [
+        "security",
+        "owasp",
+        "appsec"
+      ]
     }
   ]
 }

@@ -463,7 +463,7 @@ material.envMapIntensity = 1;
 scene.environment = envMap;
 
 // HDR environment (recommended)
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 const rgbeLoader = new RGBELoader();
 rgbeLoader.load("environment.hdr", (texture) => {
   texture.mapping = THREE.EquirectangularReflectionMapping;

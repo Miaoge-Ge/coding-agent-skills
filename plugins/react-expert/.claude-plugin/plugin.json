@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "react-expert",
+  "displayName": "React Expert",
+  "version": "1.0.0",
+  "description": "Modern React (18/19): hooks, component patterns, state management, performance, and Server Components.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["react", "hooks", "jsx", "components", "state", "rsc"]
+}

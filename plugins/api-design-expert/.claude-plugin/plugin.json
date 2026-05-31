@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "api-design-expert",
+  "displayName": "API Design Expert",
+  "version": "1.0.0",
+  "description": "Designing REST and GraphQL APIs: resource modeling, versioning, pagination, errors, and contracts.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["api", "rest", "graphql", "openapi", "versioning"]
+}

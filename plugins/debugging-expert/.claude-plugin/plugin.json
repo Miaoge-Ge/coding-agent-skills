@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "debugging-expert",
+  "displayName": "Debugging Expert",
+  "version": "1.0.0",
+  "description": "Systematic debugging: reproduction, hypothesis testing, bisection, logging, and root-cause analysis.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["debugging", "troubleshooting", "root-cause", "stack-trace", "bisect"]
+}

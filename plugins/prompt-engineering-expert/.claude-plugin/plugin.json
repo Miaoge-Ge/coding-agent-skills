@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "prompt-engineering-expert",
+  "displayName": "Prompt Engineering Expert",
+  "version": "1.0.0",
+  "description": "Designing effective prompts: structure, few-shot, chain-of-thought, output formatting, and evaluation.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["prompt-engineering", "llm", "few-shot", "chain-of-thought", "prompting"]
+}

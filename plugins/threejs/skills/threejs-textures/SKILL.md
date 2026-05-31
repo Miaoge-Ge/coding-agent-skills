@@ -197,7 +197,7 @@ texture.colorSpace = THREE.SRGBColorSpace;
 ### Compressed Textures
 
 ```javascript
-import { KTX2Loader } from "three/examples/jsm/loaders/KTX2Loader.js";
+import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
 
 const ktx2Loader = new KTX2Loader();
 ktx2Loader.setTranscoderPath("path/to/basis/");
@@ -236,7 +236,7 @@ material.envMap = cubeTexture;
 ### Equirectangular to Cubemap
 
 ```javascript
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
 const pmremGenerator = new THREE.PMREMGenerator(renderer);
 pmremGenerator.compileEquirectangularShader();
@@ -256,7 +256,7 @@ new RGBELoader().load("environment.hdr", (texture) => {
 ### RGBELoader
 
 ```javascript
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
 const loader = new RGBELoader();
 loader.load("environment.hdr", (texture) => {
@@ -269,7 +269,7 @@ loader.load("environment.hdr", (texture) => {
 ### EXRLoader
 
 ```javascript
-import { EXRLoader } from "three/examples/jsm/loaders/EXRLoader.js";
+import { EXRLoader } from "three/addons/loaders/EXRLoader.js";
 
 const loader = new EXRLoader();
 loader.load("environment.exr", (texture) => {

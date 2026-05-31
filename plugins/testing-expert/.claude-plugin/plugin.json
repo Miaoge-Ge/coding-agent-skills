@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "testing-expert",
+  "displayName": "Software Testing Expert",
+  "version": "1.0.0",
+  "description": "Test strategy and implementation: unit/integration/e2e, TDD, mocking, fixtures, and coverage.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["testing", "tdd", "unit-tests", "integration", "mocking", "coverage"]
+}

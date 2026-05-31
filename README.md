@@ -1,6 +1,14 @@
 # AI Expert Skills / AI 专家技能库
 
+**Repository:** https://github.com/Miaoge-Ge/coding-agent-skills
+
 [English](#english) | [中文](#chinese)
+
+```bash
+# Quick start in Claude Code
+/plugin marketplace add Miaoge-Ge/coding-agent-skills
+/plugin install cpp-expert@ai-expert-skills
+```
 
 <a name="english"></a>
 
@@ -35,16 +43,65 @@ Each plugin is a self-contained directory with a `.claude-plugin/plugin.json` ma
 
 ### Plugins Included
 
-| Plugin | Skills | Description |
-|--------|--------|-------------|
-| **competitive-programming-expert** | 1 | Algorithmic problem solving, complexity analysis, optimization (LeetCode/Codeforces/AtCoder). |
-| **cpp-expert** | 1 | Modern C++ (17/20/23), memory safety, RAII, move semantics, performance. |
-| **python-expert** | 1 | Pythonic code, typing, async, standard-library usage, performance. |
-| **deep-learning-expert** | 1 | Model architecture, training strategies, debugging, paper interpretation. |
-| **llm-testing-expert** | 1 | Evaluation strategies, prompt engineering, red teaming, regression testing. |
-| **software-architect** | 1 | System design, technology selection, trade-off analysis. |
-| **github-master** | 1 | Git workflows, repo management, PRs, GitHub Actions CI/CD. |
-| **threejs** | 10 | Full Three.js set: fundamentals, geometry, materials, lighting, textures, animation, loaders, shaders, post-processing, interaction. |
+**28 plugins** (37 skills) in the `ai-expert-skills` marketplace, grouped by category.
+
+**Languages**
+
+| Plugin | Description |
+|--------|-------------|
+| **typescript-expert** | TypeScript type system, generics, narrowing, and strict-mode safety. |
+| **python-expert** | Pythonic code, typing, async, standard-library usage, performance. |
+| **cpp-expert** | Modern C++ (17/20/23), memory safety, RAII, move semantics, performance. |
+| **rust-expert** | Ownership, lifetimes, traits, async, and idiomatic error handling. |
+| **go-expert** | Idiomatic Go: goroutines, channels, interfaces, error handling. |
+
+**Frontend**
+
+| Plugin | Description |
+|--------|-------------|
+| **react-expert** | Modern React (18/19): hooks, patterns, state, performance, Server Components. |
+| **nextjs-expert** | Next.js App Router, Server Components, server actions, caching. |
+| **tailwind-expert** | Tailwind CSS utility-first styling, responsive design, theming. |
+| **accessibility-expert** | Web a11y: WCAG, semantic HTML, ARIA, keyboard, screen readers. |
+| **threejs** *(10 skills)* | Full Three.js set: fundamentals, geometry, materials, lighting, textures, animation, loaders, shaders, post-processing, interaction. |
+
+**Backend & Data**
+
+| Plugin | Description |
+|--------|-------------|
+| **nodejs-backend-expert** | Node.js services (Express/Fastify/Hono): routing, middleware, auth, async. |
+| **api-design-expert** | REST/GraphQL design: resources, versioning, pagination, errors, contracts. |
+| **sql-expert** | SQL queries, schema design, indexing, query optimization, transactions. |
+
+**AI / LLM**
+
+| Plugin | Description |
+|--------|-------------|
+| **prompt-engineering-expert** | Prompt structure, few-shot, chain-of-thought, output formatting. |
+| **rag-expert** | Chunking, embeddings, vector/hybrid search, reranking, grounding. |
+| **llm-testing-expert** | Evaluation strategies, prompt engineering, red teaming, regression testing. |
+| **deep-learning-expert** | Model architecture, training strategies, debugging, paper interpretation. |
+
+**DevOps**
+
+| Plugin | Description |
+|--------|-------------|
+| **docker-expert** | Dockerfiles, multi-stage builds, image optimization, Compose. |
+| **kubernetes-expert** | Workloads, Services, ConfigMaps, probes, resources, troubleshooting. |
+| **bash-scripting-expert** | Robust, safe shell scripts: quoting, error handling, POSIX patterns. |
+| **github-master** | Git workflows, repo management, PRs, GitHub Actions CI/CD. |
+
+**Quality & Craft**
+
+| Plugin | Description |
+|--------|-------------|
+| **testing-expert** | Unit/integration/e2e, TDD, mocking, fixtures, coverage. |
+| **debugging-expert** | Systematic root-cause analysis: reproduce, bisect, fix the cause. |
+| **refactoring-expert** | Safe, incremental, behavior-preserving cleanup and tech-debt paydown. |
+| **performance-expert** | Profiling and optimizing CPU/memory/I/O/rendering, measure-first. |
+| **security-expert** | Secure coding & review (OWASP Top 10), authn/authz, secrets. |
+| **software-architect** | System design, technology selection, trade-off analysis. |
+| **competitive-programming-expert** | Algorithmic problem solving, complexity analysis, optimization. |
 
 ### Install via Claude Code (recommended)
 
@@ -170,16 +227,65 @@ coding-agent-skills/
 
 ### 包含的插件
 
-| 插件 | 技能数 | 描述 |
-|------|--------|------|
-| **competitive-programming-expert** | 1 | 算法解题、复杂度分析与优化（LeetCode/Codeforces/AtCoder）。 |
-| **cpp-expert** | 1 | 现代 C++（17/20/23）、内存安全、RAII、移动语义、性能调优。 |
-| **python-expert** | 1 | Pythonic 代码、类型标注、异步、标准库与性能优化。 |
-| **deep-learning-expert** | 1 | 模型架构设计、训练策略、调试与论文解读。 |
-| **llm-testing-expert** | 1 | 评测策略、提示词工程、红队测试与回归测试。 |
-| **software-architect** | 1 | 系统设计、技术选型与架构权衡分析。 |
-| **github-master** | 1 | Git 工作流、仓库管理、PR 与 GitHub Actions CI/CD。 |
-| **threejs** | 10 | 完整 Three.js 套件：基础、几何体、材质、灯光、纹理、动画、加载器、着色器、后处理、交互。 |
+`ai-expert-skills` 市场共 **28 个插件**(37 个技能),按品类分组。
+
+**编程语言**
+
+| 插件 | 描述 |
+|------|------|
+| **typescript-expert** | TypeScript 类型系统、泛型、类型收窄与严格模式安全。 |
+| **python-expert** | Pythonic 代码、类型标注、异步、标准库与性能优化。 |
+| **cpp-expert** | 现代 C++（17/20/23）、内存安全、RAII、移动语义、性能调优。 |
+| **rust-expert** | 所有权、生命周期、trait、异步与地道的错误处理。 |
+| **go-expert** | 地道 Go：goroutine、channel、接口与错误处理。 |
+
+**前端**
+
+| 插件 | 描述 |
+|------|------|
+| **react-expert** | 现代 React（18/19）：hooks、模式、状态、性能、Server Components。 |
+| **nextjs-expert** | Next.js App Router、Server Components、server actions、缓存。 |
+| **tailwind-expert** | Tailwind CSS 工具类样式、响应式、主题与设计系统。 |
+| **accessibility-expert** | Web 无障碍：WCAG、语义化 HTML、ARIA、键盘与读屏。 |
+| **threejs** *(10 个技能)* | 完整 Three.js 套件：基础、几何体、材质、灯光、纹理、动画、加载器、着色器、后处理、交互。 |
+
+**后端与数据**
+
+| 插件 | 描述 |
+|------|------|
+| **nodejs-backend-expert** | Node.js 服务（Express/Fastify/Hono）：路由、中间件、鉴权、异步。 |
+| **api-design-expert** | REST/GraphQL 设计：资源建模、版本化、分页、错误、契约。 |
+| **sql-expert** | SQL 查询、表结构设计、索引、查询优化与事务。 |
+
+**AI / 大模型**
+
+| 插件 | 描述 |
+|------|------|
+| **prompt-engineering-expert** | 提示词结构、few-shot、思维链、输出格式化。 |
+| **rag-expert** | 分块、embedding、向量/混合检索、重排序与答案接地。 |
+| **llm-testing-expert** | 评测策略、提示词工程、红队测试与回归测试。 |
+| **deep-learning-expert** | 模型架构设计、训练策略、调试与论文解读。 |
+
+**DevOps**
+
+| 插件 | 描述 |
+|------|------|
+| **docker-expert** | Dockerfile、多阶段构建、镜像优化、Compose。 |
+| **kubernetes-expert** | 工作负载、Service、ConfigMap、探针、资源与排障。 |
+| **bash-scripting-expert** | 健壮安全的 shell 脚本:引号、错误处理、POSIX 模式。 |
+| **github-master** | Git 工作流、仓库管理、PR 与 GitHub Actions CI/CD。 |
+
+**质量与工程素养**
+
+| 插件 | 描述 |
+|------|------|
+| **testing-expert** | 单元/集成/端到端、TDD、mock、fixture、覆盖率。 |
+| **debugging-expert** | 系统化根因分析:复现、二分定位、修因不修表。 |
+| **refactoring-expert** | 安全、增量、保持行为的重构与技术债清理。 |
+| **performance-expert** | CPU/内存/IO/渲染性能剖析与优化,先测量后优化。 |
+| **security-expert** | 安全编码与审查(OWASP Top 10)、鉴权、密钥。 |
+| **software-architect** | 系统设计、技术选型与架构权衡分析。 |
+| **competitive-programming-expert** | 算法解题、复杂度分析与优化。 |
 
 ### 通过 Claude Code 安装（推荐）
 

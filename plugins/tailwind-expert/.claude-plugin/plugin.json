@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "tailwind-expert",
+  "displayName": "Tailwind CSS Expert",
+  "version": "1.0.0",
+  "description": "Tailwind CSS utility-first styling, responsive design, theming, and design-system patterns.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["tailwind", "css", "styling", "responsive", "design-system"]
+}

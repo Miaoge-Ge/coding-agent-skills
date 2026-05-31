@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "security-expert",
+  "displayName": "Application Security Expert",
+  "version": "1.0.0",
+  "description": "Secure coding and review: OWASP Top 10, input validation, authn/authz, secrets, and dependency safety.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["security", "owasp", "appsec", "authentication", "vulnerabilities"]
+}

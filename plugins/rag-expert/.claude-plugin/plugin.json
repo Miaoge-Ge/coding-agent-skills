@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "rag-expert",
+  "displayName": "RAG Engineering Expert",
+  "version": "1.0.0",
+  "description": "Retrieval-Augmented Generation: chunking, embeddings, vector search, reranking, and grounded answers.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["rag", "embeddings", "vector-search", "retrieval", "llm"]
+}

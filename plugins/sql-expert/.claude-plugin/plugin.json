@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "sql-expert",
+  "displayName": "SQL and Database Expert",
+  "version": "1.0.0",
+  "description": "SQL queries, schema design, indexing, query optimization, and transactions across Postgres/MySQL/SQLite.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["sql", "database", "postgres", "mysql", "indexing", "query-optimization"]
+}

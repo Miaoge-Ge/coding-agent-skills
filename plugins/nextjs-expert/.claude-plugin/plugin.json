@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "nextjs-expert",
+  "displayName": "Next.js Expert",
+  "version": "1.0.0",
+  "description": "Next.js App Router, Server Components, server actions, routing, caching, and deployment.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["nextjs", "app-router", "rsc", "ssr", "vercel"]
+}

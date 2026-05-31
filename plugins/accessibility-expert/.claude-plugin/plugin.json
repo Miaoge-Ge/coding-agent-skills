@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "accessibility-expert",
+  "displayName": "Web Accessibility Expert",
+  "version": "1.0.0",
+  "description": "Web accessibility (a11y): WCAG, semantic HTML, ARIA, keyboard nav, and screen-reader support.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["accessibility", "a11y", "wcag", "aria", "semantic-html"]
+}

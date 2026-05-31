@@ -470,7 +470,7 @@ const gltfLoader = new GLTFLoader(manager);
 
 ```javascript
 // Merge static geometries
-import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 const merged = mergeGeometries([geo1, geo2, geo3]);
 
 // LOD
