@@ -69,6 +69,12 @@ HEALTHCHECK --interval=30s CMD node -e "fetch('http://localhost:3000/health').th
 CMD ["node", "dist/server.js"]
 ```
 
+## Bundled Resources
+- **`reference.md`** — multi-stage templates, BuildKit cache/secret mounts, Compose, size/cache + security checklists, troubleshooting table.
+- **`scripts/analyze.sh`** — lint a Dockerfile (hadolint + built-in heuristics).
+- **`scripts/scaffold.sh`** — generate a multi-stage Dockerfile + `.dockerignore` (node/python/go).
+- **`scripts/image-size.sh`** — build and report image size + largest layers.
+
 ## See Also
 - `kubernetes-expert` — deploying these images with probes and resources.
 - `nodejs-backend-expert` / `go-expert` — the services you containerize.
