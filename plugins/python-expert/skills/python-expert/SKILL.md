@@ -73,6 +73,10 @@ async def fetch_all(urls: list[str], limit: int = 10) -> list[str]:
         return await asyncio.gather(*(one(u) for u in urls))
 ```
 
+## Bundled Resources
+- **`reference.md`** — deep engineering reference: `pyproject.toml`/uv setup, src layout, typing patterns (Protocols/TypedDict/generics), concurrency decision table, performance recipes, testing, pitfalls. Read it for any non-trivial task.
+- **`scripts/check.sh`** — quality gate: ruff (lint+format), mypy (strict types), pytest. Run `bash scripts/check.sh [path] [--fix]`; wire the same into CI.
+
 ## See Also
 - `competitive-programming-expert` — algorithmic Python + fast I/O.
 - `deep-learning-expert` — PyTorch/NumPy on Python fundamentals.

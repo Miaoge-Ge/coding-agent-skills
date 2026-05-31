@@ -96,6 +96,10 @@ const asUserId = (s: string): UserId => s as UserId;     // single controlled ca
 function isNonEmpty<T>(a: T[]): a is [T, ...T[]] { return a.length > 0; }
 ```
 
+## Bundled Resources
+- **`reference.md`** — strict `tsconfig` baseline, narrowing toolkit, advanced-types cookbook (mapped/conditional/branded), runtime validation with zod, declaration files, perf, pitfalls. Read for non-trivial typing/config tasks.
+- **`scripts/check.sh`** — `tsc --noEmit` + eslint + prettier check (auto-detects pnpm/yarn/npx). Run `bash scripts/check.sh [path]`.
+
 ## See Also
 - `react-expert` — typing props, hooks, events, and generics in components.
 - `nodejs-backend-expert` — typing handlers, config, and validated input.

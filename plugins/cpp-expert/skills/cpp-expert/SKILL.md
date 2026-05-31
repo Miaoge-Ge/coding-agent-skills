@@ -77,6 +77,10 @@ template <std::integral T>
 constexpr T midpoint(T a, T b) noexcept { return a + (b - a) / 2; }
 ```
 
+## Bundled Resources
+- **`reference.md`** — CMake setup, ownership decision table, move/forwarding, concepts/templates, STL idioms, a UB/safety checklist, pitfalls. Read for non-trivial C++ tasks.
+- **`scripts/build-check.sh`** — compile a `.cpp` with strict warnings + ASan/UBSan and run it; ideal for minimal UB/crash repros. Run `bash scripts/build-check.sh file.cpp`.
+
 ## See Also
 - `competitive-programming-expert` — STL-heavy solutions and constant-factor tuning.
 - `performance-expert` — profiling and allocation reduction.

@@ -80,6 +80,10 @@ enum Connection {
 }
 ```
 
+## Bundled Resources
+- **`reference.md`** — error-handling templates (thiserror/anyhow), ownership cookbook, async/tokio patterns, traits vs `dyn`, `unsafe` checklist, Cargo/tooling, pitfalls. Read for non-trivial Rust tasks.
+- **`scripts/check.sh`** — rustfmt --check, clippy (deny warnings), tests. Run `bash scripts/check.sh [--fix]`.
+
 ## See Also
 - `performance-expert` — profiling, allocation reduction, flamegraphs.
 - `testing-expert` — `#[test]`, integration tests, `proptest`.

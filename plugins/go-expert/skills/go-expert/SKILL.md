@@ -77,6 +77,10 @@ func fetchAll(ctx context.Context, urls []string) ([]string, error) {
 if errors.Is(err, sql.ErrNoRows) { return nil, ErrNotFound }
 ```
 
+## Bundled Resources
+- **`reference.md`** — project layout, error wrapping, concurrency patterns (worker pool/pipeline/errgroup), interfaces, generics, table-driven testing, HTTP service essentials, pitfalls. Read for non-trivial Go tasks.
+- **`scripts/check.sh`** — gofmt, go vet, `go test -race`, golangci-lint. Run `bash scripts/check.sh [--fix]`.
+
 ## See Also
 - `performance-expert` — `pprof`, escape analysis, allocation reduction.
 - `testing-expert` — table-driven tests and `-race`.
