@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "python-expert",
+  "displayName": "Python Programming Expert",
+  "version": "1.0.0",
+  "description": "Pythonic code, typing, async, standard-library usage, and performance tuning.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["python", "pep8", "typing", "asyncio", "performance"]
+}

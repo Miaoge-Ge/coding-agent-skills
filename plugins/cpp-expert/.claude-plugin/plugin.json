@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "cpp-expert",
+  "displayName": "C++ Programming Expert",
+  "version": "1.0.0",
+  "description": "Modern C++ (17/20/23) expert for safe, performant code, templates, and UB/memory diagnosis.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["cpp", "c++", "modern-cpp", "performance", "templates", "raii"]
+}

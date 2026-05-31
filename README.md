@@ -3,225 +3,269 @@
 [English](#english) | [中文](#chinese)
 
 <a name="english"></a>
+
 ## 🇬🇧 English
 
-### Introduction
-Welcome to the **AI Expert Skills** repository. This collection hosts a set of refined system prompts and skill definitions designed to turn your AI coding assistant into a domain-specific expert. Whether you use **Trae, Cursor, Claude Code, Open Code**, or other AI coding tools, you'll find the right persona here.
+A curated collection of refined skill definitions that turn your AI coding assistant into a domain-specific expert. Distributed as **Claude Code plugins** through a built-in plugin marketplace, and also usable as plain skills in Open Code, Cursor, and Trae.
 
-These skills are optimized to enhance your pair programming experience by providing structured, high-quality context for your AI.
+Each skill provides structured, high-quality context — when to engage, when not to, concrete guidance, and runnable examples — so your assistant behaves like a focused expert instead of a generalist.
 
-### Directory Structure
-- `skills/`: English skills. Each skill is a directory: `skills/<skill-slug>/SKILL.md`.
-- `skills_cn/`: Chinese skills. Each skill is a directory: `skills_cn/<中文技能名>/SKILL.md` (Chinese directory names).
+### Repository Layout
 
-### Skills Included
+```
+coding-agent-skills/
+├── .claude-plugin/
+│   └── marketplace.json          # marketplace catalog (lists all plugins)
+├── plugins/
+│   ├── competitive-programming-expert/
+│   │   ├── .claude-plugin/plugin.json
+│   │   └── skills/competitive-programming-expert/SKILL.md
+│   ├── cpp-expert/ …
+│   ├── python-expert/ …
+│   ├── deep-learning-expert/ …
+│   ├── llm-testing-expert/ …
+│   ├── software-architect/ …
+│   ├── github-master/ …
+│   └── threejs/                  # bundles all 10 Three.js skills
+│       └── skills/threejs-*/SKILL.md
+└── rules/                        # Cursor-style coding-standard rules (not a plugin)
+```
 
-#### General Coding Skills
-| Skill | Description | File |
-|-------|-------------|------|
-| **Competitive Programming Expert** | Algorithmic problem solving, complexity analysis, and optimization strategies. | [View](skills/competitive-programming-expert/SKILL.md) |
-| **C++ Programming Expert** | Modern C++ standards (17/20), memory safety, and performance tuning. | [View](skills/cpp-expert/SKILL.md) |
-| **Python Programming Expert** | Pythonic code style, standard library usage, and performance optimization. | [View](skills/python-expert/SKILL.md) |
-| **Deep Learning Expert** | Model architecture design, training strategies, and paper interpretation. | [View](skills/deep-learning-expert/SKILL.md) |
-| **LLM Testing Expert** | Evaluation strategies, prompt engineering, and safety testing for LLMs. | [View](skills/llm-testing-expert/SKILL.md) |
-| **Software Architect** | High-level system design, technology selection, and trade-off analysis. | [View](skills/software-architect/SKILL.md) |
-| **GitHub Master** | Git workflows, repository management, and GitHub Actions CI/CD. | [View](skills/github-master/SKILL.md) |
+Each plugin is a self-contained directory with a `.claude-plugin/plugin.json` manifest; its skills live in `skills/<slug>/SKILL.md`. The marketplace name is **`ai-expert-skills`**.
 
-#### Three.js Skills
-| Skill | Description | File |
-|------|-------------|------|
-| **threejs-fundamentals** | Scene setup, cameras, renderer, Object3D hierarchy, coordinate systems. | [View](skills/threejs-fundamentals/SKILL.md) |
-| **threejs-geometry** | Built-in shapes, BufferGeometry, custom geometry, instancing. | [View](skills/threejs-geometry/SKILL.md) |
-| **threejs-materials** | PBR materials, basic/phong/standard materials, shader materials. | [View](skills/threejs-materials/SKILL.md) |
-| **threejs-lighting** | Light types, shadows, environment lighting, light helpers. | [View](skills/threejs-lighting/SKILL.md) |
-| **threejs-textures** | Texture types, UV mapping, environment maps, render targets. | [View](skills/threejs-textures/SKILL.md) |
-| **threejs-animation** | Keyframe animation, skeletal animation, morph targets, animation mixing. | [View](skills/threejs-animation/SKILL.md) |
-| **threejs-loaders** | GLTF/GLB loading, texture loading, async patterns, caching. | [View](skills/threejs-loaders/SKILL.md) |
-| **threejs-shaders** | GLSL basics, ShaderMaterial, uniforms, custom effects. | [View](skills/threejs-shaders/SKILL.md) |
-| **threejs-postprocessing** | EffectComposer, bloom, DOF, screen effects, custom passes. | [View](skills/threejs-postprocessing/SKILL.md) |
-| **threejs-interaction** | Raycasting, camera controls, mouse/touch input, object selection. | [View](skills/threejs-interaction/SKILL.md) |
+### Plugins Included
+
+| Plugin | Skills | Description |
+|--------|--------|-------------|
+| **competitive-programming-expert** | 1 | Algorithmic problem solving, complexity analysis, optimization (LeetCode/Codeforces/AtCoder). |
+| **cpp-expert** | 1 | Modern C++ (17/20/23), memory safety, RAII, move semantics, performance. |
+| **python-expert** | 1 | Pythonic code, typing, async, standard-library usage, performance. |
+| **deep-learning-expert** | 1 | Model architecture, training strategies, debugging, paper interpretation. |
+| **llm-testing-expert** | 1 | Evaluation strategies, prompt engineering, red teaming, regression testing. |
+| **software-architect** | 1 | System design, technology selection, trade-off analysis. |
+| **github-master** | 1 | Git workflows, repo management, PRs, GitHub Actions CI/CD. |
+| **threejs** | 10 | Full Three.js set: fundamentals, geometry, materials, lighting, textures, animation, loaders, shaders, post-processing, interaction. |
+
+### Install via Claude Code (recommended)
+
+Add the marketplace once, then install any plugin from it.
+
+```bash
+# 1. Register the marketplace (from the GitHub repo)
+/plugin marketplace add Miaoge-Ge/coding-agent-skills
+
+# 2. Install the plugins you want
+/plugin install cpp-expert@ai-expert-skills
+/plugin install threejs@ai-expert-skills
+/plugin install software-architect@ai-expert-skills
+
+# Or browse and install interactively
+/plugin
+```
+
+Equivalent non-interactive CLI:
+
+```bash
+claude plugin marketplace add Miaoge-Ge/coding-agent-skills
+claude plugin install cpp-expert@ai-expert-skills
+```
+
+Update later with `/plugin marketplace update ai-expert-skills`. Manage installs in the `/plugin` menu.
+
+> **Local development:** from a clone of this repo you can register the marketplace by path — `claude plugin marketplace add ./` — then `claude plugin install <name>@ai-expert-skills`.
+
+### Use without the plugin system
+
+The skills are plain `SKILL.md` files, so you can also copy them directly:
+
+- **Claude Code / Open Code:** copy `plugins/<plugin>/skills/<slug>/` into `.claude/skills/` (project) or `~/.claude/skills/` (global).
+- **Cursor:** copy into `.cursor/skills/`.
+- **Trae:** copy into `.trae/skills/`.
+
+For the Three.js bundle, copy the individual skill folders under `plugins/threejs/skills/`.
+
+### Coding-Standard Rules
+
+`rules/` holds Cursor-style rules that auto-attach by file glob (they are **not** part of the Claude Code plugins):
+
+| Rule | Scope | File |
+|------|-------|------|
+| **cpp-style-guide** | `*.cpp,*.hpp,*.h,*.cc,*.cxx` | [View](rules/cpp-style-guide.md) |
+| **python-style-guide** | `*.py,*.pyi` | [View](rules/python-style-guide.md) |
+
+Place them where your editor expects rule files (e.g., Cursor's `.cursor/rules/`).
 
 ### How It Works
-AI coding tools can load skill files from their skills directory to provide domain-specific context. Example triggers:
-- Create a 3D scene → `threejs-fundamentals`
-- Add lighting and shadows → `threejs-lighting`
-- Load a GLTF model → `threejs-loaders` + `threejs-animation`
-- Create custom visual effects → `threejs-shaders` + `threejs-postprocessing`
 
-### How to Use
+Once a plugin is installed, Claude Code auto-discovers its skills and engages the right one based on each skill's `description`. Example triggers:
 
-#### 1. Choose your language
-Navigate to `skills/` (English) or `skills_cn/` (Chinese).
-
-#### 2. Select a skill
-Choose the skill file for the expert you need (e.g., `software-architect/SKILL.md`).
-
-#### 3. Install the skill
-
-**Project-level** (recommended for team collaboration):
-- **Trae**: Place the file in `.trae/skills/` directory.
-- **Cursor**: Place the file in `.cursor/skills/` directory (or use `.cursorrules` file in project root for legacy support).
-- **Claude Code**: Place the file in `.claude/skills/` directory.
-- **Open Code**: Place the file in `.opencode/skills/` directory (also supports `.claude/skills/` for cross-IDE compatibility).
-
-**Global** (applies to all projects):
-- **Trae**: `~/.trae/skills/`
-- **Cursor**: `~/.cursor/skills/`
-- **Claude Code**: `~/.claude/skills/`
-- **Open Code**: `~/.config/opencode/skills/`
-
-Tip: Open Code can read skills from `.claude/skills/`, so placing skills there enables sharing between Claude Code and Open Code.
+- Create a 3D scene → `threejs` (fundamentals)
+- Add lighting and shadows → `threejs` (lighting)
+- Load a GLTF model → `threejs` (loaders + animation)
+- Solve a contest problem → `competitive-programming-expert`
+- Design a distributed system → `software-architect`
 
 ### Skill File Structure
 
-Each skill file uses YAML frontmatter + Markdown content:
+Each `SKILL.md` uses YAML frontmatter plus Markdown:
 
 ```markdown
 ---
-name: skill-name
-description: When this skill should be activated
+name: skill-slug          # [a-z0-9-]+, matches its directory name
+description: "When to engage, with trigger keywords. Quoted when it contains a colon."
 ---
+```
 
+The body of a **general skill** follows a consistent layout:
+
+```markdown
 # Skill Title
 
-## Quick Start
-
-[Minimal working example]
-
-## Core Concepts
-
-[Key APIs and concepts]
-
-## Common Patterns
-
-[Real-world usage patterns]
-
-## Performance Tips
-
-[Optimization guidance]
-
-## See Also
-
-[Related skills]
+## Role / Description    # who the expert is
+## When to Use           # concrete activation triggers
+## When NOT to Use       # boundaries + which skill to defer to
+## Guidelines            # the actual expertise
+## Examples              # runnable code / patterns
+## See Also              # cross-references to related skills
 ```
+
+Workflow-heavy skills (`software-architect`, `deep-learning-expert`, `llm-testing-expert`, `competitive-programming-expert`) additionally include `Input`/`Output` contracts, step-by-step `Execution Steps`, and `Failure Handling`. The Three.js skills are example-driven, leading with a runnable quick start.
+
+### License
+
+MIT — see [LICENSE](LICENSE).
 
 ---
 
 <a name="chinese"></a>
+
 ## 🇨🇳 中文
 
-### 简介
-欢迎来到 **AI 专家技能库**。本项目收集了一系列精心打磨的系统提示词和技能定义，旨在将您的 AI 编程助手转化为特定领域的专家。无论您使用的是 **Trae、Cursor、Claude Code、Open Code** 还是其他 AI 编程工具，这里都能找到合适的角色。
+一套精心打磨的技能定义，可将你的 AI 编程助手变成特定领域的专家。以 **Claude Code 插件**形式通过内置插件市场分发，同时也能作为普通技能用于 Open Code、Cursor、Trae。
 
-这些技能旨在通过提供结构化、高质量的上下文，提升您的结对编程体验。
+每个技能都提供结构化、高质量的上下文——何时启用、何时不启用、具体指导以及可运行示例——让助手表现得像一位聚焦的专家，而不是泛泛而谈。
 
-### 目录结构
-- `skills/`：英文技能。每个技能是一个目录：`skills/<skill-slug>/SKILL.md`。
-- `skills_cn/`：中文技能。每个技能是一个目录：`skills_cn/<中文技能名>/SKILL.md`（目录名使用中文）。
+### 仓库结构
 
-### 技能列表
+```
+coding-agent-skills/
+├── .claude-plugin/
+│   └── marketplace.json          # 市场目录（列出全部插件）
+├── plugins/
+│   ├── competitive-programming-expert/
+│   │   ├── .claude-plugin/plugin.json
+│   │   └── skills/competitive-programming-expert/SKILL.md
+│   ├── cpp-expert/ …
+│   ├── python-expert/ …
+│   ├── deep-learning-expert/ …
+│   ├── llm-testing-expert/ …
+│   ├── software-architect/ …
+│   ├── github-master/ …
+│   └── threejs/                  # 打包全部 10 个 Three.js 技能
+│       └── skills/threejs-*/SKILL.md
+└── rules/                        # Cursor 风格代码规范（不属于插件）
+```
 
-#### 通用编程技能
-| 技能 | 描述 | 文件 |
-|------|------|------|
-| **竞赛编程专家** | 算法解题、复杂度分析与代码优化策略。 | [查看](skills_cn/竞赛编程专家/SKILL.md) |
-| **C++ 编程专家** | 现代 C++ 标准 (17/20)、内存安全与性能调优。 | [查看](skills_cn/C++编程专家/SKILL.md) |
-| **Python 编程专家** | Pythonic 代码风格、标准库使用与性能优化。 | [查看](skills_cn/Python编程专家/SKILL.md) |
-| **深度学习专家** | 模型架构设计、训练策略与论文解读。 | [查看](skills_cn/深度学习专家/SKILL.md) |
-| **大语言模型测试专家** | LLM 评测策略、提示词工程与安全性测试。 | [查看](skills_cn/大语言模型测试专家/SKILL.md) |
-| **软件架构师** | 高层系统设计、技术选型与架构权衡分析。 | [查看](skills_cn/软件架构师/SKILL.md) |
-| **GitHub 大师** | Git 工作流、仓库管理与 GitHub Actions CI/CD。 | [查看](skills_cn/GitHub大师/SKILL.md) |
+每个插件都是独立目录，含 `.claude-plugin/plugin.json` 清单；其技能位于 `skills/<slug>/SKILL.md`。市场名称为 **`ai-expert-skills`**。
 
-#### Three.js 技能
-| 技能 | 描述 | 文件 |
-|------|------|------|
-| **Three.js基础** | 场景/相机/渲染器、坐标系与 Object3D 层级。 | [查看](skills_cn/Three.js基础/SKILL.md) |
-| **Three.js几何体** | BufferGeometry、自定义几何与 Instancing。 | [查看](skills_cn/Three.js几何体/SKILL.md) |
-| **Three.js材质** | 常用材质选型、PBR 参数、透明与渲染状态。 | [查看](skills_cn/Three.js材质/SKILL.md) |
-| **Three.js灯光** | 灯光类型、阴影与调试辅助。 | [查看](skills_cn/Three.js灯光/SKILL.md) |
-| **Three.js纹理** | 贴图加载、UV、色彩空间、环境贴图与渲染目标。 | [查看](skills_cn/Three.js纹理/SKILL.md) |
-| **Three.js动画** | AnimationMixer、动作播放与混合。 | [查看](skills_cn/Three.js动画/SKILL.md) |
-| **Three.js加载器** | GLTF/GLB 加载、资源处理与缓存。 | [查看](skills_cn/Three.js加载器/SKILL.md) |
-| **Three.js着色器** | ShaderMaterial、uniforms 与自定义效果。 | [查看](skills_cn/Three.js着色器/SKILL.md) |
-| **Three.js后处理** | EffectComposer 与常见屏幕特效链路。 | [查看](skills_cn/Three.js后处理/SKILL.md) |
-| **Three.js交互** | Raycaster 拾取、输入事件与选中反馈。 | [查看](skills_cn/Three.js交互/SKILL.md) |
+### 包含的插件
+
+| 插件 | 技能数 | 描述 |
+|------|--------|------|
+| **competitive-programming-expert** | 1 | 算法解题、复杂度分析与优化（LeetCode/Codeforces/AtCoder）。 |
+| **cpp-expert** | 1 | 现代 C++（17/20/23）、内存安全、RAII、移动语义、性能调优。 |
+| **python-expert** | 1 | Pythonic 代码、类型标注、异步、标准库与性能优化。 |
+| **deep-learning-expert** | 1 | 模型架构设计、训练策略、调试与论文解读。 |
+| **llm-testing-expert** | 1 | 评测策略、提示词工程、红队测试与回归测试。 |
+| **software-architect** | 1 | 系统设计、技术选型与架构权衡分析。 |
+| **github-master** | 1 | Git 工作流、仓库管理、PR 与 GitHub Actions CI/CD。 |
+| **threejs** | 10 | 完整 Three.js 套件：基础、几何体、材质、灯光、纹理、动画、加载器、着色器、后处理、交互。 |
+
+### 通过 Claude Code 安装（推荐）
+
+只需添加一次市场，之后即可按需安装其中的插件。
+
+```bash
+# 1. 注册市场（从 GitHub 仓库）
+/plugin marketplace add Miaoge-Ge/coding-agent-skills
+
+# 2. 安装你需要的插件
+/plugin install cpp-expert@ai-expert-skills
+/plugin install threejs@ai-expert-skills
+/plugin install software-architect@ai-expert-skills
+
+# 或交互式浏览安装
+/plugin
+```
+
+等价的非交互式 CLI：
+
+```bash
+claude plugin marketplace add Miaoge-Ge/coding-agent-skills
+claude plugin install cpp-expert@ai-expert-skills
+```
+
+之后用 `/plugin marketplace update ai-expert-skills` 更新；在 `/plugin` 菜单中管理已安装插件。
+
+> **本地开发：** 在本仓库的克隆中可用路径注册市场——`claude plugin marketplace add ./`——再执行 `claude plugin install <name>@ai-expert-skills`。
+
+### 不使用插件系统时
+
+技能本质上就是 `SKILL.md` 文件，也可以直接复制使用：
+
+- **Claude Code / Open Code：** 将 `plugins/<plugin>/skills/<slug>/` 复制到 `.claude/skills/`（项目级）或 `~/.claude/skills/`（全局）。
+- **Cursor：** 复制到 `.cursor/skills/`。
+- **Trae：** 复制到 `.trae/skills/`。
+
+对于 Three.js 套件，复制 `plugins/threejs/skills/` 下的各技能文件夹即可。
+
+### 代码规范规则
+
+`rules/` 存放 Cursor 风格规则，按文件 glob 自动挂载（**不**属于 Claude Code 插件）：
+
+| 规则 | 适用范围 | 文件 |
+|------|----------|------|
+| **cpp-style-guide** | `*.cpp,*.hpp,*.h,*.cc,*.cxx` | [查看](rules/cpp-style-guide.md) |
+| **python-style-guide** | `*.py,*.pyi` | [查看](rules/python-style-guide.md) |
+
+将其放到编辑器期望的规则目录（例如 Cursor 的 `.cursor/rules/`）。
 
 ### 工作原理
-AI 编程工具会从技能目录加载匹配上下文的技能文件，提供更准确的领域知识。常见触发示例：
-- 搭建 3D 场景 → `threejs-fundamentals` / Three.js基础
-- 添加灯光与阴影 → `threejs-lighting` / Three.js灯光
-- 加载 GLTF 模型 → `threejs-loaders` + `threejs-animation` / Three.js加载器 + Three.js动画
-- 自定义视觉效果 → `threejs-shaders` + `threejs-postprocessing` / Three.js着色器 + Three.js后处理
 
-### 使用方法
+插件安装后，Claude Code 会自动发现其技能，并根据每个技能的 `description` 启用最匹配的那个。常见触发示例：
 
-#### 1. 选择语言
-进入 `skills/` (英文) 或 `skills_cn/` (中文) 目录。
-
-#### 2. 选择技能
-选择您需要的专家技能文件（如 `软件架构师/SKILL.md`）。
-
-#### 3. 安装技能
-
-**项目级**（推荐用于团队协作）：
-- **Trae**: 将文件放入 `.trae/skills/` 目录下。
-- **Cursor**: 将文件放入 `.cursor/skills/` 目录下（传统方式支持在项目根目录放置 `.cursorrules` 文件）。
-- **Claude Code**: 将文件放入 `.claude/skills/` 目录下。
-- **Open Code**: 将文件放入 `.opencode/skills/` 目录下（也支持读取 `.claude/skills/` 实现跨 IDE 兼容）。
-
-**全局**（适用于所有项目）：
-- **Trae**: `~/.trae/skills/`
-- **Cursor**: `~/.cursor/skills/`
-- **Claude Code**: `~/.claude/skills/`
-- **Open Code**: `~/.config/opencode/skills/`
-
-提示：Open Code 可以读取 `.claude/skills/` 目录的技能文件，因此将文件放在该目录可实现 Claude Code 与 Open Code 共享。
+- 搭建 3D 场景 → `threejs`（基础）
+- 添加灯光与阴影 → `threejs`（灯光）
+- 加载 GLTF 模型 → `threejs`（加载器 + 动画）
+- 解算法竞赛题 → `competitive-programming-expert`
+- 设计分布式系统 → `software-architect`
 
 ### 技能文件结构
 
-技能文件由 YAML frontmatter 与 Markdown 正文组成：
+每个 `SKILL.md` 由 YAML frontmatter 加 Markdown 正文组成：
 
 ```markdown
 ---
-name: skill-name
-description: 何时触发该技能
+name: skill-slug          # [a-z0-9-]+，与目录名一致
+description: "何时启用，含触发关键词；含冒号时需加引号。"
 ---
-
-# 技能标题
-
-## 快速开始
-
-[最小可运行示例]
-
-## 核心概念
-
-[关键 API 与概念]
-
-## 常用模式
-
-[工程化用法]
-
-## 性能提示
-
-[优化建议]
-
-## 相关技能
-
-[交叉引用]
 ```
 
----
+**通用技能**正文采用统一布局：
 
-### ⚠️ 重要说明 / Important Notes
+```markdown
+# 技能标题
 
-1. **文件格式**: 技能文件通常包含 YAML frontmatter（元数据）和 Markdown 内容。确保文件名使用 `.md` 扩展名。
+## Role / Description    # 该专家是谁
+## When to Use           # 具体触发条件
+## When NOT to Use       # 边界，以及应转交哪个技能
+## Guidelines            # 核心专业知识
+## Examples              # 可运行代码 / 模式
+## See Also              # 关联技能交叉引用
+```
 
-2. **Cursor 兼容性**: 
-   - 新版 Cursor (0.46+) 支持 Skills 系统，使用 `.cursor/skills/` 目录
-   - 旧版 Cursor 使用项目根目录的 `.cursorrules` 文件
-   - 建议优先使用 `.cursor/skills/` 以支持多技能管理
+工作流型技能（`software-architect`、`deep-learning-expert`、`llm-testing-expert`、`competitive-programming-expert`）还包含 `Input`/`Output` 契约、分步 `Execution Steps` 与 `Failure Handling`。Three.js 系列以示例驱动，以可运行的快速上手开头。
 
-3. **多 IDE 共享**: 如果团队使用多种 IDE，建议将技能文件放在 `.claude/skills/`，因为：
-   - Claude Code 原生支持
-   - Open Code 兼容读取
-   - 其他工具（如 Trae、Cursor）可通过软链接或复制使用
+### 许可证
+
+MIT —— 见 [LICENSE](LICENSE)。

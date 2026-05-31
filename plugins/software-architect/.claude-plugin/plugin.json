@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "software-architect",
+  "displayName": "Software Architect",
+  "version": "1.0.0",
+  "description": "High-level system design, technology selection, and architecture trade-off analysis.",
+  "author": { "name": "Miaoge-Ge", "email": "qq1508020550@gmail.com" },
+  "homepage": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "repository": "https://github.com/Miaoge-Ge/coding-agent-skills",
+  "license": "MIT",
+  "keywords": ["architecture", "system-design", "microservices", "distributed-systems", "scalability"]
+}
